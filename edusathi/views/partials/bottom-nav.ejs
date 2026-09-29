@@ -1,0 +1,29 @@
+<!-- Modern Student Mobile Bottom Navigation Bar -->
+<nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
+  <a href="<%= user ? '/dashboard' : '/' %>" class="bottom-nav-item <%= (typeof activeTab !== 'undefined' && (activeTab === 'dashboard' || activeTab === 'home')) ? 'active' : '' %>">
+    <span class="bottom-nav-icon">🏠</span>
+    <span class="bottom-nav-label"><%= (lang === 'hi') ? 'होम' : 'Home' %></span>
+  </a>
+
+  <a href="/learn" class="bottom-nav-item <%= (typeof activeTab !== 'undefined' && activeTab === 'learn') ? 'active' : '' %>">
+    <span class="bottom-nav-icon">📖</span>
+    <span class="bottom-nav-label"><%= (lang === 'hi') ? 'पढ़ाई' : 'Learn' %></span>
+  </a>
+
+  <a href="/tutor" class="bottom-nav-item bottom-nav-center <%= (typeof activeTab !== 'undefined' && activeTab === 'tutor') ? 'active' : '' %>">
+    <div class="bottom-nav-center-bubble">
+      <span>🤖</span>
+    </div>
+    <span class="bottom-nav-label">AI Tutor</span>
+  </a>
+
+  <a href="/quizzes" class="bottom-nav-item <%= (typeof activeTab !== 'undefined' && activeTab === 'quizzes') ? 'active' : '' %>">
+    <span class="bottom-nav-icon">📝</span>
+    <span class="bottom-nav-label"><%= (lang === 'hi') ? 'क्विज़' : 'Quiz' %></span>
+  </a>
+
+  <a href="<%= user ? '/profile' : '/auth/login' %>" class="bottom-nav-item <%= (typeof activeTab !== 'undefined' && (activeTab === 'profile' || activeTab === 'progress')) ? 'active' : '' %>">
+    <span class="bottom-nav-icon">👤</span>
+    <span class="bottom-nav-label"><%= (lang === 'hi') ? 'प्रोफ़ाइल' : 'Profile' %></span>
+  </a>
+</nav>

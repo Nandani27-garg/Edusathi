@@ -1,0 +1,126 @@
+<%- include('partials/header', { pageTitle: (lang === 'hi') ? 'टेस्ट परिणाम एवं समीक्षा' : 'Quiz Results & Review' }) %>
+<%- include('partials/navbar', { activeTab: 'quizzes' }) %>
+
+<main class="container" style="padding-top: 1.5rem; padding-bottom: 3.5rem; max-width: 900px;">
+  <!-- Results Hero Summary Card -->
+  <div class="result-hero-card">
+    <div class="result-score-badge <%= percentage >= 80 ? 'high' : (percentage >= 50 ? 'med' : 'low') %>">
+      <span class="score-number"><%= percentage %>%</span>
+      <span class="score-sub"><%= attempt.score %> / <%= attempt.total_questions %> <%= (lang === 'hi') ? 'सही उत्तर' : 'Correct' %></span>
+    </div>
+
+    <div class="result-hero-info">
+      <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.35rem;">
+        <span class="badge badge-slate"><%= attempt.category %></span>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">⏱️ <%= attempt.time_taken_seconds %> <%= (lang === 'hi') ? 'सेकंड में पूरा' : 'seconds taken' %></span>
+      </div>
+
+      <h1 style="font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem;">
+        <%= (lang === 'hi') ? attempt.quiz_title_hi : attempt.quiz_title %>
+      </h1>
+
+      <p class="result-feedback-message">
+        <% if (percentage >= 80) { %>
+          🎉 <strong><%= (lang === 'hi') ? 'शानदार प्रदर्शन!' : 'Outstanding Performance!' %></strong> 
+          <%= (lang === 'hi') ? 'आपकी इस विषय पर पकड़ बहुत मजबूत है।' : 'You have demonstrated an excellent grasp of these core fundamentals.' %>
+        <% } else if (percentage >= 50) { %>
+          👍 <strong><%= (lang === 'hi') ? 'अच्छा प्रयास!' : 'Good Effort!' %></strong> 
+          <%= (lang === 'hi') ? 'नीचे दी गई व्याख्याओं को पढ़कर अपने अंक और सुधारें।' : 'Review the detailed explanations below to strengthen missed concepts.' %>
+        <% } else { %>
+          💪 <strong><%= (lang === 'hi') ? 'अभ्यास जारी रखें!' : 'Keep Practicing!' %></strong> 
+          <%= (lang === 'hi') ? 'गलतियों से ही सीखा जाता है। उत्तरों को समझें और पुनः प्रयास करें।' : 'Every attempt builds stronger understanding. Read the hints and try again.' %>
+        <% } %>
+      </p>
+
+      <div class="result-actions-wrap">
+        <a href="/quizzes/take/<%= attempt.quiz_slug || attempt.quiz_id %>" class="btn btn-outline-primary">
+          🔄 <%= (lang === 'hi') ? 'दोबारा टेस्ट दें' : 'Retake Quiz' %>
+        </a>
+        <a href="/quizzes" class="btn btn-secondary">
+          📚 <%= (lang === 'hi') ? 'अन्य टेस्ट देखें' : 'All Quizzes' %>
+        </a>
+        <a href="/tutor" class="btn btn-primary">
+          🤖 <%= (lang === 'hi') ? 'एआई ट्यूटर से संशय पूछें' : 'Ask AI Tutor' %>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detailed Answer Review Section -->
+  <div class="section-title-wrap" style="margin-top: 2.5rem;">
+    <div>
+      <h2 class="section-heading" style="font-size: 1.4rem;">
+        <span>🔍</span>
+        <span><%= (lang === 'hi') ? 'उत्तर समीक्षा एवं विस्तृत व्याख्या' : 'Question Breakdown & Explanations' %></span>
+      </h2>
+      <p class="section-subtext">
+        <%= (lang === 'hi') ? 'प्रत्येक प्रश्न के लिए आपका उत्तर और सही अवधारणा का विवरण।' : 'See what you selected, the correct answer, and practical conceptual notes.' %>
+      </p>
+    </div>
+  </div>
+
+  <div class="review-questions-list">
+    <% questions.forEach((q, idx) => { 
+      const optList = (lang === 'hi' && q.options_hi && q.options_hi.length) ? q.options_hi : q.options;
+      const explanationText = (lang === 'hi' && q.explanation_hi) ? q.explanation_hi : q.explanation;
+    %>
+      <div class="review-question-card <%= q.isCorrect ? 'card-correct' : 'card-wrong' %>">
+        <div class="review-q-header">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span class="question-number-tag">Q<%= idx + 1 %></span>
+            <% if (q.isCorrect) { %>
+              <span class="badge badge-success">✓ <%= (lang === 'hi') ? 'सही उत्तर' : 'Correct (+1)' %></span>
+            <% } else { %>
+              <span class="badge badge-danger">✕ <%= (lang === 'hi') ? 'गलत उत्तर' : 'Incorrect (0)' %></span>
+            <% } %>
+          </div>
+
+          <button type="button" class="btn btn-sm btn-secondary" onclick="window.EduVoice && window.EduVoice.speak('<%= (lang === "hi") ? q.question_hi : q.question %>', '<%= lang || "hi" %>')">
+            🔊 <%= (lang === 'hi') ? 'सुनाएँ' : 'Read' %>
+          </button>
+        </div>
+
+        <h3 class="review-q-text">
+          <%= (lang === 'hi') ? q.question_hi : q.question %>
+        </h3>
+
+        <!-- Options Review Grid -->
+        <div class="review-options-grid">
+          <% optList.forEach((opt, optIdx) => { 
+            const isUserChoice = q.chosenIndex === optIdx;
+            const isTargetCorrect = q.correctIndex === optIdx;
+            let optClass = '';
+            if (isTargetCorrect) optClass = 'opt-correct';
+            else if (isUserChoice && !isTargetCorrect) optClass = 'opt-chosen-wrong';
+          %>
+            <div class="review-option-pill <%= optClass %>">
+              <span class="opt-marker">
+                <% if (isTargetCorrect) { %> ✓ <% } else if (isUserChoice) { %> ✕ <% } else { %> <%= String.fromCharCode(65 + optIdx) %> <% } %>
+              </span>
+              <span class="opt-label-text"><%= opt %></span>
+              <% if (isUserChoice && isTargetCorrect) { %>
+                <span class="user-choice-tag">(<%= (lang === 'hi') ? 'आपका सही उत्तर' : 'Your Answer' %>)</span>
+              <% } else if (isUserChoice) { %>
+                <span class="user-choice-tag wrong">(<%= (lang === 'hi') ? 'आपका चयन' : 'Your Answer' %>)</span>
+              <% } else if (isTargetCorrect) { %>
+                <span class="user-choice-tag correct">(<%= (lang === 'hi') ? 'सही उत्तर' : 'Correct Answer' %>)</span>
+              <% } %>
+            </div>
+          <% }); %>
+        </div>
+
+        <!-- Explanation Box -->
+        <div class="explanation-box">
+          <div class="explanation-title">
+            <span>💡</span>
+            <strong><%= (lang === 'hi') ? 'अवधारणा एवं व्याख्या' : 'Concept Explanation' %></strong>
+          </div>
+          <p class="explanation-text"><%= explanationText %></p>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+</main>
+
+<%- include('partials/bottom-nav', { activeTab: 'quizzes' }) %>
+<%- include('partials/footer') %>

@@ -1,0 +1,210 @@
+<%- include('partials/header', { pageTitle: (lang === 'hi') ? 'क्विज़ और टेस्ट - अभ्यास' : 'Quizzes & Tests' }) %>
+<%- include('partials/navbar', { activeTab: 'quizzes' }) %>
+
+<div class="app-layout">
+  <%- include('partials/sidebar', { activeTab: 'quizzes' }) %>
+
+  <main class="app-content">
+    <!-- Header -->
+    <div class="lms-header-box">
+      <div class="lms-header-info">
+        <h1 class="lms-title"><%= (lang === 'hi') ? 'क्विज़ और टेस्ट' : 'Quizzes & Tests' %></h1>
+        <p class="lms-subtitle">
+          <%= (lang === 'hi') 
+            ? 'अपनी समझ को परखें, अभ्यास करें और परीक्षा की तैयारी को मजबूत बनाएं।' 
+            : 'Test your conceptual understanding with quick daily challenges, subject practice, and mock tests.' %>
+        </p>
+      </div>
+
+      <div class="header-action-pill">
+        <span class="badge badge-accent">⚡ <%= stats.totalTaken %> <%= (lang === 'hi') ? 'टेस्ट पूर्ण' : 'Attempted' %></span>
+      </div>
+    </div>
+
+    <!-- Section 1: TODAY'S CHALLENGE -->
+    <% if (dailyChallenge) { %>
+      <div class="quiz-section-block">
+        <div class="section-label-small">
+          <span>🔥</span>
+          <span><%= (lang === 'hi') ? 'आज की चुनौती' : "TODAY'S CHALLENGE" %></span>
+        </div>
+
+        <div class="daily-challenge-hero-card">
+          <div class="challenge-body">
+            <div class="challenge-info">
+              <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
+                <span class="badge badge-primary"><%= dailyChallenge.category %></span>
+                <span class="difficulty-tag <%= dailyChallenge.difficulty.toLowerCase() %>"><%= dailyChallenge.difficulty %></span>
+              </div>
+              <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.4rem;">
+                <%= (lang === 'hi') ? dailyChallenge.title_hi : dailyChallenge.title %>
+              </h2>
+              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.85rem;">
+                <%= (lang === 'hi') ? dailyChallenge.description_hi : dailyChallenge.description %>
+              </p>
+              <div class="challenge-meta">
+                <span>❓ <%= dailyChallenge.total_questions || 5 %> <%= (lang === 'hi') ? 'प्रश्न' : 'Questions' %></span>
+                <span>•</span>
+                <span>⏱️ <%= dailyChallenge.time_limit_minutes || 5 %> <%= (lang === 'hi') ? 'मिनट' : 'Minutes' %></span>
+                <span>•</span>
+                <span><%= dailyChallenge.difficulty || 'Medium' %></span>
+              </div>
+            </div>
+
+            <div class="challenge-cta">
+              <a href="/quizzes/take/<%= dailyChallenge.slug %>" class="btn btn-primary btn-lg">
+                <span><%= (lang === 'hi') ? 'क्विज़ शुरू करें' : 'Start Quiz' %></span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Section 2: SUBJECT PRACTICE -->
+    <div class="quiz-section-block" style="margin-top: 2.25rem;">
+      <div class="section-label-small">
+        <span>📚</span>
+        <span><%= (lang === 'hi') ? 'विषयवार अभ्यास' : 'SUBJECT PRACTICE' %></span>
+      </div>
+
+      <div class="course-grid">
+        <% subjectQuizzes.slice(0, 4).forEach(quiz => { %>
+          <div class="card quiz-card">
+            <div class="quiz-card-header">
+              <div class="quiz-icon-circle"><%= quiz.icon %></div>
+              <span class="category-pill"><%= quiz.category %></span>
+            </div>
+
+            <h4 class="quiz-title">
+              <%= (lang === 'hi') ? quiz.title_hi : quiz.title %>
+            </h4>
+
+            <p class="quiz-desc">
+              <%= (lang === 'hi') ? quiz.description_hi : quiz.description %>
+            </p>
+
+            <div class="quiz-footer-meta">
+              <span>⏱️ <%= quiz.time_limit_minutes %>m</span>
+              <span>•</span>
+              <span>❓ <%= quiz.total_questions %> Qs</span>
+              <span>•</span>
+              <span class="difficulty-tag <%= quiz.difficulty.toLowerCase() %>"><%= quiz.difficulty %></span>
+            </div>
+
+            <div style="margin-top: 1rem;">
+              <a href="/quizzes/take/<%= quiz.slug %>" class="btn btn-outline-primary btn-block">
+                <span><%= (lang === 'hi') ? 'अभ्यास शुरू करें' : 'Start Quiz' %></span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+
+    <!-- Section 3: MOCK TESTS -->
+    <div class="quiz-section-block" style="margin-top: 2.25rem;">
+      <div class="section-label-small">
+        <span>🏆</span>
+        <span><%= (lang === 'hi') ? 'मॉक टेस्ट (बोर्ड मॉडल)' : 'MOCK TESTS' %></span>
+      </div>
+
+      <div class="course-grid">
+        <div class="card quiz-card" style="border-top: 3px solid #2563EB;">
+          <div class="quiz-card-header">
+            <div class="quiz-icon-circle">📑</div>
+            <span class="badge badge-primary"><%= (lang === 'hi') ? 'कक्षा 10 बोर्ड' : 'Class 10 Board' %></span>
+          </div>
+          <h4 class="quiz-title"><%= (lang === 'hi') ? 'विज्ञान समग्र मॉक टेस्ट 1' : 'Comprehensive Science Mock 1' %></h4>
+          <p class="quiz-desc"><%= (lang === 'hi') ? 'भौतिकी, रसायन और जीवविज्ञान के सभी अध्यायों का 15 प्रश्नों का परीक्षण।' : 'Full coverage of physics, chemistry, and biology chapters.' %></p>
+          <div class="quiz-footer-meta">
+            <span>⏱️ 15m</span> • <span>❓ 15 Qs</span> • <span class="difficulty-tag medium">Standard</span>
+          </div>
+          <div style="margin-top: 1rem;">
+            <a href="/quizzes/take/science-ch1-quiz" class="btn btn-primary btn-block">
+              <span><%= (lang === 'hi') ? 'मॉक टेस्ट दें' : 'Take Mock Test' %></span> →
+            </a>
+          </div>
+        </div>
+
+        <div class="card quiz-card" style="border-top: 3px solid #059669;">
+          <div class="quiz-card-header">
+            <div class="quiz-icon-circle">📐</div>
+            <span class="badge badge-success"><%= (lang === 'hi') ? 'गणित अभ्यास' : 'Maths Practice' %></span>
+          </div>
+          <h4 class="quiz-title"><%= (lang === 'hi') ? 'गणित संकल्पना मॉक टेस्ट 1' : 'Mathematics Concept Mock 1' %></h4>
+          <p class="quiz-desc"><%= (lang === 'hi') ? 'वास्तविक संख्याएं और त्रिकोणमिति पर आधारित अभ्यास टेस्ट।' : 'Real numbers, linear equations, and geometric principles.' %></p>
+          <div class="quiz-footer-meta">
+            <span>⏱️ 15m</span> • <span>❓ 10 Qs</span> • <span class="difficulty-tag hard">Challenging</span>
+          </div>
+          <div style="margin-top: 1rem;">
+            <a href="/quizzes/take/math-ch1-quiz" class="btn btn-outline-primary btn-block">
+              <span><%= (lang === 'hi') ? 'मॉक टेस्ट दें' : 'Take Mock Test' %></span> →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: RECENT RESULTS -->
+    <% if (recentAttempts && recentAttempts.length > 0) { %>
+      <div class="quiz-section-block" style="margin-top: 2.5rem;">
+        <div class="section-label-small">
+          <span>📊</span>
+          <span><%= (lang === 'hi') ? 'हालिया परिणाम' : 'RECENT RESULTS' %></span>
+        </div>
+
+        <div class="card" style="padding: 0; overflow: hidden;">
+          <div class="results-table-wrap">
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th><%= (lang === 'hi') ? 'टेस्ट का नाम' : 'Quiz Title' %></th>
+                  <th><%= (lang === 'hi') ? 'विषय' : 'Subject' %></th>
+                  <th><%= (lang === 'hi') ? 'अंक' : 'Score' %></th>
+                  <th><%= (lang === 'hi') ? 'समय' : 'Time' %></th>
+                  <th><%= (lang === 'hi') ? 'कार्रवाई' : 'Action' %></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% recentAttempts.forEach(att => { 
+                  const pct = Math.round((att.score / att.total_questions) * 100);
+                %>
+                  <tr>
+                    <td>
+                      <div style="font-weight: 700; color: var(--text-main);">
+                        <%= att.icon || '📝' %> <%= (lang === 'hi') ? att.quiz_title_hi : att.quiz_title %>
+                      </div>
+                      <span style="font-size: 0.75rem; color: var(--text-muted);"><%= new Date(att.created_at).toLocaleDateString() %></span>
+                    </td>
+                    <td>
+                      <span class="badge badge-slate"><%= att.category %></span>
+                    </td>
+                    <td>
+                      <span class="score-pill <%= pct >= 80 ? 'high' : (pct >= 50 ? 'med' : 'low') %>">
+                        <%= att.score %>/<%= att.total_questions %> (<%= pct %>%)
+                      </span>
+                    </td>
+                    <td style="color: var(--text-muted); font-size: 0.85rem;">
+                      <%= att.time_taken_seconds %>s
+                    </td>
+                    <td>
+                      <a href="/quizzes/results/<%= att.id %>" class="btn btn-sm btn-secondary">
+                        <%= (lang === 'hi') ? 'समीक्षा' : 'Review' %>
+                      </a>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </main>
+</div>
+
+<%- include('partials/bottom-nav', { activeTab: 'quizzes' }) %>
+<%- include('partials/footer') %>

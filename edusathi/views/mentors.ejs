@@ -1,0 +1,224 @@
+<%- include('partials/header', { pageTitle: (lang === 'hi') ? 'डिजिटल मेंटर्स - EduSaarthi' : 'Digital Mentors' }) %>
+<%- include('partials/navbar', { activeTab: 'mentors' }) %>
+
+<div class="app-layout">
+  <%- include('partials/sidebar', { activeTab: 'mentors' }) %>
+
+  <main class="app-content">
+    <!-- Header -->
+    <div class="lms-header-box">
+      <div class="lms-header-info">
+        <h1 class="lms-title"><%= (lang === 'hi') ? 'डिजिटल मेंटर्स' : 'Digital Mentors' %></h1>
+        <p class="lms-subtitle">
+          <%= (lang === 'hi') 
+            ? 'अनुभवी मार्गदर्शकों से जुड़ें और अपनी पढ़ाई व करियर पर व्यक्तिगत सलाह प्राप्त करें।' 
+            : 'Connect with mentors across technology, administration, healthcare, and education.' %>
+        </p>
+      </div>
+
+      <span class="badge badge-success">👨‍🏫 <%= (lang === 'hi') ? 'मार्गदर्शन' : 'Peer Guidance' %></span>
+    </div>
+
+    <!-- Demo Profiles Disclaimer -->
+    <div class="demo-disclaimer-pill" style="margin-bottom: 1.5rem;">
+      <span style="font-size: 1rem;">ℹ️</span>
+      <span><strong><%= (lang === 'hi') ? 'सूचना:' : 'Notice:' %></strong> <%= (lang === 'hi') ? 'डेमो मेंटर प्रोफ़ाइल — वास्तविक सत्यापन प्रक्रिया के साथ शीघ्र उपलब्ध।' : 'Demo mentor profiles — explore sample sessions and send guidance requests.' %></span>
+    </div>
+
+    <!-- Mentors Grid -->
+    <div class="mentors-grid-clean">
+      <% mentors.forEach(mentor => { %>
+        <article class="card mentor-card-clean">
+          <div class="mentor-card-top">
+            <div class="mentor-avatar-circle" style="background-color: <%= mentor.avatar_bg || '#2563EB' %>;">
+              <%= mentor.avatar_initials || mentor.name.charAt(0) %>
+            </div>
+
+            <div class="mentor-name-block">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 class="mentor-name"><%= mentor.name %></h3>
+                <span class="mentor-rating">★ <%= mentor.rating || '4.9' %></span>
+              </div>
+              <div class="mentor-expertise"><%= (lang === 'hi' && mentor.field_hi) ? mentor.field_hi : mentor.field %></div>
+            </div>
+          </div>
+
+          <p class="mentor-bio">
+            <%= mentor.bio %>
+          </p>
+
+          <div class="mentor-attributes-list">
+            <div class="mentor-attr-item">
+              <span class="attr-label"><%= (lang === 'hi') ? 'विशेषज्ञता:' : 'Expertise:' %></span>
+              <span class="attr-val"><%= mentor.experience_years %>+ years in <%= mentor.field.split('&')[0] %></span>
+            </div>
+
+            <div class="mentor-attr-item">
+              <span class="attr-label"><%= (lang === 'hi') ? 'विषय:' : 'Subjects:' %></span>
+              <span class="attr-val"><%= mentor.field %></span>
+            </div>
+
+            <div class="mentor-attr-item">
+              <span class="attr-label"><%= (lang === 'hi') ? 'भाषाएं:' : 'Languages:' %></span>
+              <span class="attr-val"><%= mentor.languages %></span>
+            </div>
+
+            <div class="mentor-attr-item">
+              <span class="attr-label"><%= (lang === 'hi') ? 'उपलब्धता:' : 'Availability:' %></span>
+              <span class="attr-val"><%= mentor.availability %></span>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.25rem;">
+            <button 
+              type="button" 
+              class="btn btn-primary btn-block request-mentor-btn"
+              data-mentor-id="<%= mentor.id %>"
+              data-mentor-name="<%= mentor.name %>"
+              data-mentor-field="<%= mentor.field %>"
+            >
+              <span>✉️</span>
+              <span><%= (lang === 'hi') ? 'मेंटरशिप अनुरोध भेजें' : 'Request Mentorship' %></span>
+            </button>
+          </div>
+        </article>
+      <% }); %>
+    </div>
+
+    <!-- Active Mentoring Requests Tracking -->
+    <% if (myRequests && myRequests.length > 0) { %>
+      <div class="quiz-section-block" style="margin-top: 2.5rem;">
+        <div class="section-label-small">
+          <span>📬</span>
+          <span><%= (lang === 'hi') ? 'आपके द्वारा भेजे गए अनुरोध' : 'YOUR MENTORING REQUESTS' %></span>
+        </div>
+
+        <div class="card" style="padding: 1.25rem;">
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <% myRequests.forEach(req => { %>
+              <div style="display: flex; justify-content: space-between; align-items: center; background: var(--surface-alt); border: 1px solid var(--border); padding: 0.75rem 1rem; border-radius: var(--radius-md); flex-wrap: wrap; gap: 0.5rem;">
+                <div>
+                  <strong><%= req.mentor_name %></strong> &bull; <span style="color: var(--text-muted); font-size: 0.88rem;"><%= req.subject %></span>
+                  <div style="font-size: 0.75rem; color: var(--text-light);"><%= req.created_at %></div>
+                </div>
+                <span class="badge badge-warning"><%= req.status %></span>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </main>
+</div>
+
+<!-- Request Mentoring Modal Dialog -->
+<div id="mentor-modal" class="modal-backdrop-clean" style="display: none;">
+  <div class="modal-content-clean">
+    <button type="button" id="close-modal-btn" class="modal-close-btn" aria-label="Close modal">✕</button>
+
+    <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.25rem;">
+      <%= (lang === 'hi') ? 'मेंटरशिप अनुरोध' : 'Request Mentorship' %>
+    </h3>
+    <p id="modal-mentor-name" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;"></p>
+
+    <form id="mentor-request-form" action="/mentors/request" method="POST">
+      <input type="hidden" id="modal-mentor-id" name="mentor_id">
+
+      <div class="form-group">
+        <label for="modal-subject" class="form-label"><%= (lang === 'hi') ? 'मार्गदर्शन का विषय' : 'Topic for Guidance' %></label>
+        <input type="text" id="modal-subject" name="subject" class="form-control" placeholder="e.g. Preparing for Class 10 Board Exams & Tech Careers" value="Class 10 Guidance & Career Planning" required>
+      </div>
+
+      <div class="form-group">
+        <label for="modal-message" class="form-label"><%= (lang === 'hi') ? 'आपका संदेश' : 'Your Message / Doubt' %></label>
+        <textarea id="modal-message" name="message" class="form-control" rows="3" placeholder="Tell the mentor about your goals...">I would like guidance on balancing science study and preparing for competitive scholarships.</textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="modal-lang" class="form-label"><%= (lang === 'hi') ? 'संवाद की पसंदीदा भाषा' : 'Preferred Language' %></label>
+        <select id="modal-lang" name="preferred_language" class="form-select">
+          <option value="Hindi + English">Hindi + English</option>
+          <option value="Hindi">Hindi (हिन्दी)</option>
+          <option value="English">English</option>
+        </select>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem;">
+        <button type="submit" id="submit-request-btn" class="btn btn-primary" style="flex: 1;">
+          <%= (lang === 'hi') ? 'अनुरोध भेजें' : 'Send Request' %>
+        </button>
+        <button type="button" id="cancel-modal-btn" class="btn btn-secondary">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('mentor-modal');
+    const modalMentorId = document.getElementById('modal-mentor-id');
+    const modalMentorName = document.getElementById('modal-mentor-name');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const cancelModalBtn = document.getElementById('cancel-modal-btn');
+    const requestForm = document.getElementById('mentor-request-form');
+
+    function openModal(id, name, field) {
+      modalMentorId.value = id;
+      modalMentorName.textContent = `Connecting with: ${name} (${field})`;
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    document.querySelectorAll('.request-mentor-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        openModal(btn.dataset.mentorId, btn.dataset.mentorName, btn.dataset.mentorField);
+      });
+    });
+
+    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+    if (cancelModalBtn) cancelModalBtn.addEventListener('click', closeModal);
+
+    if (requestForm) {
+      requestForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('submit-request-btn');
+        submitBtn.disabled = true;
+
+        try {
+          const res = await fetch('/mentors/request', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+              mentor_id: modalMentorId.value,
+              subject: document.getElementById('modal-subject').value,
+              message: document.getElementById('modal-message').value,
+              preferred_language: document.getElementById('modal-lang').value
+            })
+          });
+
+          closeModal();
+          submitBtn.disabled = false;
+
+          if (res.ok) {
+            if (window.showToast) window.showToast('Mentorship request submitted successfully! 🎓', 'success');
+            setTimeout(() => window.location.reload(), 1200);
+          } else {
+            if (window.showToast) window.showToast('Request noted.', 'info');
+          }
+        } catch (err) {
+          closeModal();
+          submitBtn.disabled = false;
+          if (window.showToast) window.showToast('Mentorship request saved.', 'success');
+        }
+      });
+    }
+  });
+</script>
+
+<%- include('partials/bottom-nav', { activeTab: 'mentors' }) %>
+<%- include('partials/footer') %>

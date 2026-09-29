@@ -1,0 +1,61 @@
+<%- include('partials/header', { pageTitle: (lang === 'hi') ? 'लॉग इन' : 'Login' }) %>
+<%- include('partials/navbar', { activeTab: 'login' }) %>
+
+<main class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="brand-icon" style="margin: 0 auto 0.75rem; width: 3rem; height: 3rem; font-size: 1.5rem;">ES</div>
+      <h1 class="auth-title"><%= (lang === 'hi') ? 'विद्यार्थी लॉग इन' : 'Student Login' %></h1>
+      <p class="auth-subtitle"><%= (lang === 'hi') ? 'अपनी पढ़ाई जारी रखने के लिए प्रवेश करें' : 'Sign in to continue your learning journey' %></p>
+    </div>
+
+    <!-- Prominent Demo Student Box -->
+    <div class="demo-login-box">
+      <div style="font-weight: 700; color: #1E40AF; margin-bottom: 0.35rem; font-size: 0.95rem;">
+        ⚡ <%= (lang === 'hi') ? 'हैकाथॉन डेमो खाता (एक क्लिक में प्रवेश)' : 'Hackathon Demo Access (1-Click Login)' %>
+      </div>
+      <p style="font-size: 0.8rem; color: #475569; margin-bottom: 0.75rem;">
+        <%= (lang === 'hi') ? 'परीक्षण हेतु राहुल कुमार का पहले से तैयार डेमो खाता उपयोग करें:' : 'Test all features using pre-loaded student Rahul Kumar:' %>
+      </p>
+      <div class="demo-credentials-text">
+        <strong>Email:</strong> demo@edusaarthi.test &nbsp;|&nbsp; <strong>Password:</strong> Demo@123
+      </div>
+      <form action="/auth/demo-login" method="POST" style="margin-top: 0.85rem;">
+        <button type="submit" class="btn btn-accent btn-sm" style="width: 100%;">
+          <span>🚀</span>
+          <span><%= (lang === 'hi') ? 'डेमो विद्यार्थी के रूप में लॉगिन करें (Try Demo Student)' : 'Login as Demo Student (1-Click)' %></span>
+        </button>
+      </form>
+    </div>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div style="padding: 0.75rem; background: #FEE2E2; color: #991B1B; border-radius: var(--radius-md); font-size: 0.875rem; margin-bottom: 1.25rem;">
+        <%= error %>
+      </div>
+    <% } %>
+
+    <!-- Standard Login Form -->
+    <form action="/auth/login" method="POST">
+      <div class="form-group">
+        <label for="email" class="form-label"><%= (lang === 'hi') ? 'ईमेल पता' : 'Email Address' %></label>
+        <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com" required autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label"><%= (lang === 'hi') ? 'पासवर्ड' : 'Password' %></label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem;">
+        <%= (lang === 'hi') ? 'लॉग इन करें' : 'Sign In' %>
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--text-muted);">
+      <%= (lang === 'hi') ? 'नया खाता बनाना चाहते हैं?' : "Don't have an account?" %>
+      <a href="/auth/register" style="font-weight: 700; color: var(--primary);"><%= (lang === 'hi') ? 'यहाँ पंजीकरण करें' : 'Register here' %></a>
+    </div>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,212 @@
+<%- include('partials/header', { pageTitle: (lang === 'hi') ? 'प्राथमिकताएं एवं सेटिंग्स' : 'Settings & Preferences' }) %>
+<%- include('partials/navbar', { activeTab: 'settings' }) %>
+
+<div class="app-layout">
+  <%- include('partials/sidebar', { activeTab: 'settings' }) %>
+
+  <main class="app-content">
+    <div class="content-header">
+      <div>
+        <h1 class="page-title">
+          <span>⚙️</span>
+          <span><%= (lang === 'hi') ? 'प्राथमिकताएं एवं सेटिंग्स' : 'App Settings & Preferences' %></span>
+        </h1>
+        <p class="page-subtitle">
+          <%= (lang === 'hi') ? 'भाषा, इंटरनेट डेटा बचत, आवाज़ और थीम को अपनी सुविधा अनुसार अनुकूलित करें।' : 'Customize language, low-bandwidth data saving, voice interactions, and display theme.' %>
+        </p>
+      </div>
+    </div>
+
+    <div class="card settings-container-card" style="max-width: 800px;">
+      <form action="/profile/settings/save" method="POST" id="settings-form">
+        <!-- 1. Regional Language Settings -->
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <div>
+              <h3 class="settings-section-title">
+                🌐 <%= (lang === 'hi') ? 'डिफ़ॉल्ट भाषा (Persistent Language)' : 'Preferred Regional Language' %>
+              </h3>
+              <p class="settings-section-desc">
+                <%= (lang === 'hi') ? 'यह भाषा पूरे ऐप में (डैशबोर्ड, पाठ, एआई ट्यूटर, टेस्ट) स्थायी रूप से लागू रहेगी।' : 'Selected language persists across all pages, tabs, voice recognition, and AI Tutor.' %>
+              </p>
+            </div>
+          </div>
+
+          <div class="settings-control-row">
+            <label for="settings-lang-select" style="font-weight: 600; color: var(--text-main);">
+              <%= (lang === 'hi') ? 'भाषा चुनें:' : 'Select Language:' %>
+            </label>
+            <select name="preferred_language" id="settings-lang-select" class="form-input" style="max-width: 280px;">
+              <% supportedLanguages.forEach(l => { %>
+                <option value="<%= l.code %>" <%= (lang === l.code) ? 'selected' : '' %>>
+                  <%= l.label %> (<%= l.name %>)
+                </option>
+              <% }); %>
+            </select>
+          </div>
+        </div>
+
+        <hr class="settings-divider">
+
+        <!-- 2. Low-Data & Bandwidth Optimization -->
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <div>
+              <h3 class="settings-section-title">
+                📶 <%= (lang === 'hi') ? 'लो-डेटा मोड (Low Data Mode)' : 'Low-Bandwidth Mode' %>
+              </h3>
+              <p class="settings-section-desc">
+                <%= (lang === 'hi') ? 'धीमे 2G/3G नेटवर्क में भारी एनिमेशन और गैर-ज़रूरी छवियों को रोकता है।' : 'Disables heavy animations, suppresses decorative images, and optimizes for 2G/3G connectivity.' %>
+              </p>
+            </div>
+          </div>
+
+          <div class="settings-control-row">
+            <label class="toggle-switch-label">
+              <input type="checkbox" name="low_data" id="settings-low-data-checkbox" value="1" <%= (settings.low_data || lowData) ? 'checked' : '' %>>
+              <span class="toggle-slider"></span>
+              <span style="font-weight: 600; margin-left: 0.75rem;">
+                <%= (lang === 'hi') ? 'लो-डेटा मोड सक्षम करें' : 'Enable Low Data Mode' %>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <hr class="settings-divider">
+
+        <!-- 3. Voice & Speech Interaction -->
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <div>
+              <h3 class="settings-section-title">
+                🎙️ <%= (lang === 'hi') ? 'आवाज़ एवं वाक् अंतःक्रिया (Voice & Speech)' : 'Voice & Speech Interaction' %>
+              </h3>
+              <p class="settings-section-desc">
+                <%= (lang === 'hi') ? 'माइक द्वारा सवाल पूछने और उत्तरों को बोलकर सुनने की सुविधा।' : 'Web Speech API voice question input and text-to-speech audio read aloud.' %>
+              </p>
+            </div>
+          </div>
+
+          <div class="settings-control-row">
+            <label class="toggle-switch-label">
+              <input type="checkbox" name="voice_enabled" value="1" <%= settings.voice_enabled !== 0 ? 'checked' : '' %>>
+              <span class="toggle-slider"></span>
+              <span style="font-weight: 600; margin-left: 0.75rem;">
+                <%= (lang === 'hi') ? 'आवाज़ और टेक्स्ट-टू-स्पीच सक्रिय रखें' : 'Enable Voice & Audio Features' %>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <hr class="settings-divider">
+
+        <!-- 4. Visual Display Theme -->
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <div>
+              <h3 class="settings-section-title">
+                🎨 <%= (lang === 'hi') ? 'डिस्प्ले थीम (Theme)' : 'Display Theme' %>
+              </h3>
+              <p class="settings-section-desc">
+                <%= (lang === 'hi') ? 'दिन में अध्ययन के लिए स्पष्ट लाइट मोड या रात में पढ़ने के लिए हाई-कंट्रास्ट।' : 'Choose clean modern default, high-contrast accessible mode, or night study mode.' %>
+              </p>
+            </div>
+          </div>
+
+          <div class="theme-picker-grid">
+            <label class="theme-option <%= (settings.theme === 'light' || !settings.theme) ? 'active' : '' %>">
+              <input type="radio" name="theme" value="light" <%= (settings.theme === 'light' || !settings.theme) ? 'checked' : '' %>>
+              <div class="theme-preview-box light">☀️</div>
+              <span class="theme-name"><%= (lang === 'hi') ? 'क्लीन लाइट (मानक)' : 'Clean Light' %></span>
+            </label>
+
+            <label class="theme-option <%= (settings.theme === 'high-contrast') ? 'active' : '' %>">
+              <input type="radio" name="theme" value="high-contrast" <%= (settings.theme === 'high-contrast') ? 'checked' : '' %>>
+              <div class="theme-preview-box high-contrast">👁️</div>
+              <span class="theme-name"><%= (lang === 'hi') ? 'हाई-कंट्रास्ट' : 'High Contrast' %></span>
+            </label>
+
+            <label class="theme-option <%= (settings.theme === 'dark') ? 'active' : '' %>">
+              <input type="radio" name="theme" value="dark" <%= (settings.theme === 'dark') ? 'checked' : '' %>>
+              <div class="theme-preview-box dark">🌙</div>
+              <span class="theme-name"><%= (lang === 'hi') ? 'नाइट स्टडी (डार्क)' : 'Night Study' %></span>
+            </label>
+          </div>
+        </div>
+
+        <hr class="settings-divider">
+
+        <!-- 5. Offline Storage Management -->
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <div>
+              <h3 class="settings-section-title">
+                💾 <%= (lang === 'hi') ? 'ऑफ़लाइन स्टोरेज व कैश (PWA Cache)' : 'Offline Storage & Cache' %>
+              </h3>
+              <p class="settings-section-desc">
+                <%= (lang === 'hi') ? 'ऑफ़लाइन पढ़ाई के लिए सहेजे गए पाठ और क्विज़ डेटा की स्थिति।' : 'Downloaded lessons and offline app shells stored on this device.' %>
+              </p>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary" id="clear-cache-btn">
+              🗑️ <%= (lang === 'hi') ? 'ऑफ़लाइन कैश साफ़ करें' : 'Clear Offline Cache' %>
+            </button>
+            <span id="cache-status-msg" style="font-size: 0.85rem; color: var(--text-muted);">
+              ✓ PWA Service Worker Cache Active
+            </span>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+          <button type="submit" class="btn btn-primary btn-lg">
+            💾 <%= (lang === 'hi') ? 'सेटिंग्स सहेजें' : 'Save All Preferences' %>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // When language changes in settings, immediately sync to EduSaarthiLanguage manager
+    const settingsLang = document.getElementById('settings-lang-select');
+    if (settingsLang) {
+      settingsLang.addEventListener('change', () => {
+        if (window.EduSaarthiLanguage) {
+          window.EduSaarthiLanguage.set(settingsLang.value);
+        }
+      });
+    }
+
+    // Theme selector click preview
+    document.querySelectorAll('.theme-option input[type="radio"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        document.querySelectorAll('.theme-option').forEach(el => el.classList.remove('active'));
+        e.target.closest('.theme-option').classList.add('active');
+        localStorage.setItem('edusaarthi_theme', e.target.value);
+        document.documentElement.setAttribute('data-theme', e.target.value);
+      });
+    });
+
+    // Clear Cache button
+    const clearBtn = document.getElementById('clear-cache-btn');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', async () => {
+        if ('caches' in window) {
+          const keys = await caches.keys();
+          for (const key of keys) {
+            await caches.delete(key);
+          }
+          if (window.showToast) window.showToast('Offline cache cleared successfully.', 'info');
+          document.getElementById('cache-status-msg').textContent = 'Cache cleared. Will re-cache on next visit.';
+        }
+      });
+    }
+  });
+</script>
+
+<%- include('partials/bottom-nav', { activeTab: 'settings' }) %>
+<%- include('partials/footer') %>

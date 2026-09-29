@@ -1,0 +1,246 @@
+<%- include('partials/header', { pageTitle: quiz.title + ' | EduSaarthi Test' }) %>
+<%- include('partials/navbar', { activeTab: 'quizzes' }) %>
+
+<main class="container" style="padding-top: 1.5rem; padding-bottom: 3rem; max-width: 860px;">
+  <!-- Runner Top Navigation & Timer -->
+  <div class="runner-header-card">
+    <div class="runner-title-box">
+      <a href="/quizzes" class="btn btn-sm btn-secondary" title="Exit Quiz">✕ <%= (lang === 'hi') ? 'वापस' : 'Exit' %></a>
+      <div>
+        <h2 style="font-size: 1.25rem; font-weight: 700; margin: 0; color: var(--text-main);">
+          <%= (lang === 'hi') ? quiz.title_hi : quiz.title %>
+        </h2>
+        <span class="badge badge-slate" style="margin-top: 0.2rem;"><%= quiz.category %></span>
+      </div>
+    </div>
+
+    <!-- Live Timer Pill -->
+    <div class="timer-pill" id="quiz-timer-pill" aria-live="polite">
+      <span>⏱️</span>
+      <span id="timer-display">05:00</span>
+    </div>
+  </div>
+
+  <!-- Progress Bar & Question Counter -->
+  <div class="runner-progress-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 600;">
+      <span id="question-indicator" style="color: var(--primary);">
+        <%= (lang === 'hi') ? 'प्रश्न 1 / ' + totalQuestions : 'Question 1 of ' + totalQuestions %>
+      </span>
+      <span id="answered-counter" style="color: var(--text-muted); font-size: 0.85rem;">
+        0/<%= totalQuestions %> <%= (lang === 'hi') ? 'उत्तर दिए गए' : 'answered' %>
+      </span>
+    </div>
+    <div class="progress-bar-bg" style="height: 8px;">
+      <div id="quiz-progress-fill" class="progress-bar-fill" style="width: <%= Math.round(100 / totalQuestions) %>%;"></div>
+    </div>
+  </div>
+
+  <!-- Quiz Runner Container -->
+  <div class="quiz-runner-body">
+    <form id="quiz-form">
+      <% questions.forEach((q, index) => { %>
+        <div class="question-step" id="question-step-<%= index %>" style="<%= index === 0 ? '' : 'display: none;' %>" data-step="<%= index %>">
+          <div class="question-statement-box">
+            <span class="question-number-tag">Q<%= index + 1 %></span>
+            <div class="question-text">
+              <% if (lang === 'hi') { %>
+                <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;"><%= q.question_hi %></h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted);"><%= q.question %></p>
+              <% } else { %>
+                <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;"><%= q.question %></h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted);"><%= q.question_hi %></p>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="options-container" role="radiogroup">
+            <% 
+              const optList = (lang === 'hi' && q.options_hi && q.options_hi.length) ? q.options_hi : q.options;
+              const optListAlt = (lang === 'hi') ? q.options : q.options_hi;
+              optList.forEach((opt, optIdx) => { 
+                const letter = String.fromCharCode(65 + optIdx);
+            %>
+              <label class="option-label" for="q_<%= index %>_opt_<%= optIdx %>">
+                <input 
+                  type="radio" 
+                  name="question_<%= index %>" 
+                  id="q_<%= index %>_opt_<%= optIdx %>" 
+                  value="<%= optIdx %>"
+                  class="option-radio"
+                  data-question-index="<%= index %>"
+                  data-option-index="<%= optIdx %>"
+                >
+                <div class="option-content">
+                  <span class="option-badge"><%= letter %></span>
+                  <div class="option-text-wrap">
+                    <span class="option-main-text"><%= opt %></span>
+                    <% if (optListAlt && optListAlt[optIdx] && optListAlt[optIdx] !== opt) { %>
+                      <span class="option-sub-text"><%= optListAlt[optIdx] %></span>
+                    <% } %>
+                  </div>
+                </div>
+              </label>
+            <% }); %>
+          </div>
+        </div>
+      <% }); %>
+
+      <!-- Runner Bottom Controls -->
+      <div class="runner-nav-controls">
+        <button type="button" id="prev-btn" class="btn btn-secondary" style="visibility: hidden;">
+          ← <%= (lang === 'hi') ? 'पिछला प्रश्न' : 'Previous' %>
+        </button>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <button type="button" id="next-btn" class="btn btn-primary">
+            <span><%= (lang === 'hi') ? 'अगला प्रश्न' : 'Next' %></span>
+            <span>→</span>
+          </button>
+
+          <button type="button" id="submit-quiz-btn" class="btn btn-success" style="display: none;">
+            <span>✓ <%= (lang === 'hi') ? 'टेस्ट सबमिट करें' : 'Submit Test' %></span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const totalQuestions = <%= totalQuestions %>;
+    const quizId = <%= quiz.id %>;
+    const timeLimitMinutes = <%= quiz.time_limit_minutes || 5 %>;
+    let currentStep = 0;
+    const userAnswers = new Array(totalQuestions).fill(null);
+    let secondsRemaining = timeLimitMinutes * 60;
+    let timeTakenSeconds = 0;
+
+    const timerDisplay = document.getElementById('timer-display');
+    const timerPill = document.getElementById('quiz-timer-pill');
+    const questionIndicator = document.getElementById('question-indicator');
+    const answeredCounter = document.getElementById('answered-counter');
+    const progressFill = document.getElementById('quiz-progress-fill');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-quiz-btn');
+
+    // 1. Timer Logic
+    const timerInterval = setInterval(() => {
+      secondsRemaining--;
+      timeTakenSeconds++;
+
+      const mins = Math.floor(secondsRemaining / 60);
+      const secs = secondsRemaining % 60;
+      timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+      if (secondsRemaining <= 60) {
+        timerPill.style.backgroundColor = '#FEE2E2';
+        timerPill.style.borderColor = '#DC2626';
+        timerPill.style.color = '#991B1B';
+      }
+
+      if (secondsRemaining <= 0) {
+        clearInterval(timerInterval);
+        if (window.showToast) window.showToast('Time is up! Submitting test automatically...', 'warning');
+        submitQuiz();
+      }
+    }, 1000);
+
+    // 2. Answer Selection Handler
+    document.querySelectorAll('.option-radio').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        const qIdx = parseInt(e.target.dataset.questionIndex, 10);
+        const optIdx = parseInt(e.target.dataset.optionIndex, 10);
+        userAnswers[qIdx] = optIdx;
+
+        // Visual selection
+        const stepContainer = document.getElementById(`question-step-${qIdx}`);
+        stepContainer.querySelectorAll('.option-label').forEach(label => label.classList.remove('selected'));
+        e.target.closest('.option-label').classList.add('selected');
+
+        updateAnsweredCount();
+      });
+    });
+
+    function updateAnsweredCount() {
+      const answeredCount = userAnswers.filter(a => a !== null).length;
+      answeredCounter.textContent = `${answeredCount}/${totalQuestions} <%= (lang === "hi") ? "उत्तर दिए गए" : "answered" %>`;
+    }
+
+    // 3. Navigation between questions
+    function showStep(index) {
+      document.querySelectorAll('.question-step').forEach((el, idx) => {
+        el.style.display = idx === index ? 'block' : 'none';
+      });
+
+      currentStep = index;
+      questionIndicator.textContent = `<%= (lang === "hi") ? "प्रश्न" : "Question" %> ${currentStep + 1} <%= (lang === "hi") ? "/" : "of" %> ${totalQuestions}`;
+      progressFill.style.width = `${Math.round(((currentStep + 1) / totalQuestions) * 100)}%`;
+
+      prevBtn.style.visibility = currentStep === 0 ? 'hidden' : 'visible';
+
+      if (currentStep === totalQuestions - 1) {
+        nextBtn.style.display = 'none';
+        submitBtn.style.display = 'inline-flex';
+      } else {
+        nextBtn.style.display = 'inline-flex';
+        submitBtn.style.display = 'none';
+      }
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentStep > 0) showStep(currentStep - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentStep < totalQuestions - 1) showStep(currentStep + 1);
+    });
+
+    // 4. Submit Quiz
+    async function submitQuiz() {
+      clearInterval(timerInterval);
+      submitBtn.disabled = true;
+      submitBtn.textContent = '<%= (lang === "hi") ? "जाँच रहे हैं..." : "Grading..." %>';
+
+      try {
+        const res = await fetch('/quizzes/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            quiz_id: quizId,
+            answers: userAnswers,
+            time_taken_seconds: timeTakenSeconds
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          window.location.href = data.redirectUrl || `/quizzes/results/${data.attemptId}`;
+        } else {
+          alert('Failed to submit quiz. Please try again.');
+          submitBtn.disabled = false;
+        }
+      } catch (err) {
+        console.error('Submission error:', err);
+        alert('Network error while submitting quiz.');
+        submitBtn.disabled = false;
+      }
+    }
+
+    submitBtn.addEventListener('click', () => {
+      const unanswered = userAnswers.filter(a => a === null).length;
+      if (unanswered > 0) {
+        if (!confirm(`You have ${unanswered} unanswered question(s). Submit test anyway?`)) {
+          return;
+        }
+      }
+      submitQuiz();
+    });
+
+    showStep(0);
+  });
+</script>
+
+<%- include('partials/footer') %>

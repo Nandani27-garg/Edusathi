@@ -1,0 +1,215 @@
+<%- include('partials/header', { pageTitle: (lang === 'hi') ? lesson.title_hi : lesson.title }) %>
+<%- include('partials/navbar', { activeTab: 'learn' }) %>
+
+<div class="app-layout">
+  <%- include('partials/sidebar', { activeTab: 'learn' }) %>
+
+  <main class="app-content">
+  <!-- Breadcrumbs & Offline Controls -->
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+    <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--text-muted);">
+      <a href="/learn" style="color: var(--text-muted);"><%= (lang === 'hi') ? 'विषय' : 'Courses' %></a>
+      <span>/</span>
+      <a href="/learn/<%= course.slug %>" style="color: var(--primary-light); font-weight: 600;">
+        <%= (lang === 'hi') ? course.title_hi : course.title %>
+      </a>
+      <span>/</span>
+      <span style="color: var(--text-main); font-weight: 600;">Lesson <%= lesson.order_index %></span>
+    </div>
+
+    <!-- Download for Offline Button -->
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <button type="button" id="download-offline-btn" class="btn btn-sm btn-outline-primary" style="display: inline-flex; align-items: center; gap: 0.4rem;">
+        <span id="download-icon">📥</span>
+        <span id="download-text"><%= (lang === 'hi') ? 'ऑफ़लाइन के लिए डाउनलोड करें' : 'Download for Offline' %></span>
+      </button>
+      <span id="offline-ready-badge" class="badge badge-success" style="display: none; padding: 0.45rem 0.75rem;">
+        ✓ Available Offline
+      </span>
+    </div>
+  </div>
+
+  <!-- Lesson Content Card -->
+  <article class="card" style="padding: 2.25rem; margin-bottom: 2.5rem; line-height: 1.7;">
+    <!-- Lesson Header -->
+    <div style="border-bottom: 1px solid var(--border); padding-bottom: 1.25rem; margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+        <span class="badge badge-primary"><%= course.education_level %> &bull; <%= (lang === 'hi') ? course.title_hi : course.title %></span>
+        <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Lesson <%= lesson.order_index %></span>
+      </div>
+      <h1 style="font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">
+        <%= (lang === 'hi') ? lesson.title_hi : lesson.title %>
+      </h1>
+      <p style="font-size: 1.05rem; color: var(--text-muted);">
+        <%= (lang === 'hi') ? lesson.summary_hi : lesson.summary %>
+      </p>
+    </div>
+
+    <!-- Main Explanation Content -->
+    <div class="lesson-body-content" style="font-size: 1.05rem; color: #1E293B;">
+      <% 
+        // Simple markdown formatter for headings and bold text
+        function formatMarkdown(text) {
+          if (!text) return '';
+          return text
+            .replace(/^### (.*$)/gim, '<h3 style="font-size: 1.35rem; font-weight: 700; color: var(--primary); margin: 1.5rem 0 0.75rem;">$1</h3>')
+            .replace(/^#### (.*$)/gim, '<h4 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 1.25rem 0 0.5rem;">$1</h4>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/\n\n/g, '<p style="margin-bottom: 1rem;"></p>');
+        }
+      %>
+      <%- formatMarkdown((lang === 'hi') ? lesson.content_hi : lesson.content) %>
+    </div>
+
+    <!-- Everyday Practical Observation Box -->
+    <div style="background: #FFFBEB; border-left: 4px solid var(--accent); padding: 1.25rem; border-radius: var(--radius-md); margin: 2rem 0;">
+      <h4 style="font-size: 1.1rem; font-weight: 700; color: #92400E; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span>💡</span>
+        <span><%= (lang === 'hi') ? 'दैनिक जीवन और ग्रामीण अवलोकन' : 'Everyday Practical Observation' %></span>
+      </h4>
+      <div style="font-size: 0.95rem; color: #78350F; line-height: 1.6;">
+        <%- formatMarkdown((lang === 'hi') ? lesson.examples_hi : lesson.examples) %>
+      </div>
+    </div>
+
+    <!-- Key Takeaway Points -->
+    <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 2rem;">
+      <h4 style="font-size: 1.1rem; font-weight: 700; color: #166534; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span>🎯</span>
+        <span><%= (lang === 'hi') ? 'मुख्य बिंदु (Key Takeaways)' : 'Key Takeaways' %></span>
+      </h4>
+      <ul style="padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.95rem; color: #14532D;">
+        <% 
+          const currentKeyPoints = (lang === 'hi') ? keyPointsHi : keyPoints;
+          currentKeyPoints.forEach(pt => { 
+        %>
+          <li><%= pt %></li>
+        <% }); %>
+      </ul>
+    </div>
+
+    <!-- Interactive Mini-Quiz Section -->
+    <% if (quizData && quizData.length > 0) { %>
+      <div style="margin-top: 2.5rem; border-top: 1px solid var(--border); padding-top: 2rem;">
+        <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span>📝</span>
+          <span><%= (lang === 'hi') ? 'लर्निंग चेक: लघु प्रश्नोत्तरी (Mini Quiz)' : 'Concept Check: Mini Quiz' %></span>
+        </h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+          <%= (lang === 'hi') ? 'सही उत्तर चुनकर अपनी समझ की जांच करें:' : 'Choose the correct option to test your understanding:' %>
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <% quizData.forEach((q, qIndex) => { %>
+            <div class="card quiz-question-box" data-question-index="<%= qIndex %>" data-correct-index="<%= q.answer %>" style="background: var(--surface-alt); border: 1.5px solid var(--border); padding: 1.25rem;">
+              <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.85rem; color: var(--text-main);">
+                <%= qIndex + 1 %>. <%= q.question %>
+              </h4>
+
+              <div style="display: grid; grid-template-columns: 1fr; gap: 0.6rem;">
+                <% q.options.forEach((opt, optIndex) => { %>
+                  <button type="button" class="btn btn-secondary quiz-option-btn" data-option-index="<%= optIndex %>" style="text-align: left; justify-content: flex-start; padding: 0.65rem 1rem; font-size: 0.95rem;">
+                    <span style="font-weight: 700; margin-right: 0.5rem;"><%= String.fromCharCode(65 + optIndex) %>)</span>
+                    <span><%= opt %></span>
+                  </button>
+                <% }); %>
+              </div>
+
+              <div class="quiz-explanation" style="display: none; margin-top: 1rem; padding: 0.85rem; border-radius: var(--radius-sm); font-size: 0.9rem; line-height: 1.4;">
+                <strong>Explanation:</strong> <%= q.explanation %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Previous / Next Navigation -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; border-top: 1px solid var(--border); padding-top: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+      <% if (prevLesson) { %>
+        <a href="/learn/lesson/<%= prevLesson.id %>" class="btn btn-secondary">
+          ← <%= (lang === 'hi') ? prevLesson.title_hi : prevLesson.title %>
+        </a>
+      <% } else { %>
+        <div></div>
+      <% } %>
+
+      <a href="/learn/<%= course.slug %>" class="btn btn-outline-primary btn-sm">
+        <%= (lang === 'hi') ? 'पाठ सूची' : 'Course Index' %>
+      </a>
+
+      <% if (nextLesson) { %>
+        <a href="/learn/lesson/<%= nextLesson.id %>" class="btn btn-primary">
+          <%= (lang === 'hi') ? nextLesson.title_hi : nextLesson.title %> →
+        </a>
+      <% } else { %>
+        <a href="/learn" class="btn btn-success">
+          ✓ <%= (lang === 'hi') ? 'पाठ्यक्रम पूरा हुआ' : 'Course Completed' %>
+        </a>
+      <% } %>
+    </div>
+  </article>
+</main>
+
+<script>
+  // Handle Lesson Offline Download
+  document.addEventListener('DOMContentLoaded', async () => {
+    const lessonId = <%= lesson.id %>;
+    const downloadBtn = document.getElementById('download-offline-btn');
+    const downloadText = document.getElementById('download-text');
+    const downloadIcon = document.getElementById('download-icon');
+    const offlineBadge = document.getElementById('offline-ready-badge');
+
+    // Check if lesson is already saved locally
+    if (window.OfflineStorage) {
+      const isSaved = await window.OfflineStorage.isLessonSaved(lessonId);
+      if (isSaved) {
+        if (downloadText) downloadText.textContent = '<%= (lang === "hi") ? "✓ ऑफ़लाइन उपलब्ध" : "✓ Available Offline" %>';
+        if (downloadBtn) {
+          downloadBtn.classList.remove('btn-outline-primary');
+          downloadBtn.classList.add('btn-secondary');
+          downloadBtn.disabled = true;
+        }
+        if (offlineBadge) offlineBadge.style.display = 'inline-block';
+      }
+    }
+
+    if (downloadBtn) {
+      downloadBtn.addEventListener('click', async () => {
+        try {
+          downloadBtn.disabled = true;
+          if (downloadText) downloadText.textContent = '<%= (lang === "hi") ? "डाउनलोड हो रहा है..." : "Downloading..." %>';
+
+          // Fetch full lesson data
+          const res = await fetch(`/learn/api/lesson/${lessonId}`);
+          if (!res.ok) throw new Error('Download failed');
+          const lessonData = await res.json();
+
+          // Store in IndexedDB
+          if (window.OfflineStorage) {
+            await window.OfflineStorage.saveLesson(lessonData);
+          }
+
+          if (downloadText) downloadText.textContent = '<%= (lang === "hi") ? "✓ ऑफ़लाइन उपलब्ध" : "✓ Available Offline" %>';
+          if (downloadIcon) downloadIcon.textContent = '✓';
+          if (offlineBadge) offlineBadge.style.display = 'inline-block';
+          downloadBtn.classList.remove('btn-outline-primary');
+          downloadBtn.classList.add('btn-secondary');
+
+          window.showToast('<%= (lang === "hi") ? "पाठ ऑफ़लाइन उपयोग के लिए डाउनलोड हो गया।" : "Lesson downloaded for offline use." %>', 'success');
+        } catch (err) {
+          console.error('Offline download failed:', err);
+          downloadBtn.disabled = false;
+          if (downloadText) downloadText.textContent = '<%= (lang === "hi") ? "पुनः प्रयास करें" : "Retry Download" %>';
+          window.showToast('Failed to download lesson. Check network.', 'error');
+      });
+    }
+  });
+</script>
+
+  </main>
+</div>
+
+<%- include('partials/bottom-nav', { activeTab: 'learn' }) %>
+<%- include('partials/footer') %>

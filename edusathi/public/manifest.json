@@ -1,0 +1,22 @@
+{
+  "name": "EduSaarthi - Learning Without Barriers",
+  "short_name": "EduSaarthi",
+  "description": "Inclusive, multilingual, offline-first EdTech platform designed for rural and tribal learners.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#1E3A8A",
+  "theme_color": "#1E3A8A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

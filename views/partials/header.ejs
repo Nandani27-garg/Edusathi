@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="<%= lang || 'en' %>">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle + ' | EduSaarthi' : 'EduSaarthi - Learning Without Barriers' %></title>
+  
+  <meta name="description" content="EduSaarthi: An inclusive, multilingual, offline-first EdTech platform designed for rural and tribal learners.">
+  <meta name="theme-color" content="#1E3A8A">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
+  <link rel="apple-touch-icon" href="/images/icon-192.png">
+
+  <!-- Inter & Noto Sans Devanagari font families for crisp typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Design System CSS -->
+  <link rel="stylesheet" href="/css/main.css">
+
+  <!-- Centralized Language Manager Loaded Early in Head -->
+  <script src="/js/languageManager.js"></script>
+
+  <!-- Early Theme & Language Alignment Script (Guards against language reset) -->
+  <script>
+    (function() {
+      try {
+        var savedLang = localStorage.getItem('edusaarthi_language');
+        if (!savedLang) {
+          savedLang = 'en';
+          localStorage.setItem('edusaarthi_language', 'en');
+        }
+
+        var cookieMatch = document.cookie.match(/(?:^|;\s*)edusaarthi_language=([^;]*)/);
+        var cookieLang = cookieMatch ? decodeURIComponent(cookieMatch[1]) : null;
+        if (cookieLang !== savedLang) {
+          document.cookie = "edusaarthi_language=" + encodeURIComponent(savedLang) + "; path=/; max-age=31536000; SameSite=Lax";
+        }
+
+        var docLang = document.documentElement.getAttribute('lang') || 'en';
+        // Only reload if the rendered language genuinely differs from user's saved choice
+        if (docLang !== savedLang && !sessionStorage.getItem('__lang_reloaded_' + savedLang)) {
+          sessionStorage.setItem('__lang_reloaded_' + savedLang, '1');
+          window.location.reload();
+        }
+
+        // Theme check
+        var savedTheme = localStorage.getItem('edusaarthi_theme');
+        if (savedTheme === 'dark' || savedTheme === 'high-contrast') {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body class="<%= (typeof lowData !== 'undefined' && lowData) ? 'low-data-mode' : '' %>">

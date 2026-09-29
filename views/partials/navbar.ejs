@@ -1,0 +1,111 @@
+<!-- Offline Notification Banner -->
+<div class="offline-banner" id="offline-banner" role="alert">
+  ⚠️ <%= (lang === 'hi') ? 'आप ऑफ़लाइन हैं। डाउनलोड किए गए पाठ अभी भी उपलब्ध हैं।' : "You're offline. Downloaded lessons are still available." %>
+</div>
+
+<!-- Clean Minimal Top Header Bar -->
+<header class="app-header navbar" role="banner">
+  <div class="header-inner container-fluid">
+    <!-- Left: Brand / Mobile Toggle / Page Title -->
+    <div class="header-left">
+      <% if (typeof activeTab !== 'undefined' && activeTab === 'home') { %>
+        <!-- Landing Page Brand -->
+        <a href="/" class="brand" aria-label="EduSaarthi Home">
+          <div class="brand-icon" aria-hidden="true">ES</div>
+          <div class="brand-text">
+            <span class="brand-title"><%= t('siteName') %></span>
+            <span class="brand-tagline"><%= t('tagline') %></span>
+          </div>
+        </a>
+      <% } else { %>
+        <!-- App Page: Mobile Sidebar Toggle + Page Title -->
+        <button type="button" class="mobile-sidebar-toggle" id="mobile-sidebar-toggle" aria-label="Toggle navigation drawer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <a href="<%= user ? '/dashboard' : '/' %>" class="header-brand-compact" aria-label="EduSaarthi Home">
+          <span class="brand-icon-sm">ES</span>
+        </a>
+
+        <div class="header-page-title">
+          <% if (typeof activeTab !== 'undefined') { %>
+            <% if (activeTab === 'dashboard') { %>
+              <h1><%= (lang === 'hi') ? 'डैशबोर्ड' : 'Dashboard' %></h1>
+            <% } else if (activeTab === 'learn') { %>
+              <h1><%= (lang === 'hi') ? 'माय लर्निंग' : 'My Learning' %></h1>
+            <% } else if (activeTab === 'tutor') { %>
+              <h1>AI Tutor</h1>
+            <% } else if (activeTab === 'quizzes') { %>
+              <h1><%= (lang === 'hi') ? 'क्विज़ और टेस्ट' : 'Quizzes & Tests' %></h1>
+            <% } else if (activeTab === 'progress') { %>
+              <h1><%= (lang === 'hi') ? 'मेरी प्रगति' : 'My Progress' %></h1>
+            <% } else if (activeTab === 'scholarships') { %>
+              <h1><%= (lang === 'hi') ? 'छात्रवृत्ति खोज' : 'Scholarships' %></h1>
+            <% } else if (activeTab === 'career') { %>
+              <h1><%= (lang === 'hi') ? 'करियर मार्गदर्शन' : 'Career Guidance' %></h1>
+            <% } else if (activeTab === 'mentors') { %>
+              <h1><%= (lang === 'hi') ? 'डिजिटल मेंटर्स' : 'Mentors' %></h1>
+            <% } else if (activeTab === 'profile') { %>
+              <h1><%= (lang === 'hi') ? 'प्रोफ़ाइल' : 'Profile' %></h1>
+            <% } else if (activeTab === 'settings') { %>
+              <h1><%= (lang === 'hi') ? 'सेटिंग्स' : 'Settings' %></h1>
+            <% } else { %>
+              <h1>EduSaarthi</h1>
+            <% } %>
+          <% } else { %>
+            <h1>EduSaarthi</h1>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Right: Language Selector, Low Data Mode, User Chip / Auth -->
+    <div class="header-right">
+      <!-- Network indicator dot -->
+      <span class="header-net-pill" id="network-status-pill" title="Network status">
+        <span class="net-dot"></span>
+        <span class="net-text"><%= (lang === 'hi') ? 'ऑनलाइन' : 'Online' %></span>
+      </span>
+
+      <!-- Low Data Mode Toggle Button -->
+      <button type="button" class="header-btn header-lowdata-btn <%= (typeof lowData !== 'undefined' && lowData) ? 'active' : '' %>" id="low-data-toggle" aria-pressed="<%= (typeof lowData !== 'undefined' && lowData) ? 'true' : 'false' %>" title="Toggle Low Data Mode">
+        <span class="btn-icon">📶</span>
+        <span class="toggle-text"><%= (typeof lowData !== 'undefined' && lowData) ? 'Low Data: ON' : 'Low Data' %></span>
+      </button>
+
+      <!-- Primary Language Selector Dropdown -->
+      <div class="header-lang-wrapper" title="Select Website Language">
+        <span class="header-lang-icon" aria-hidden="true">🌐</span>
+        <select id="lang-select" class="lang-select header-lang-select" aria-label="Select Language">
+          <% if (typeof supportedLanguages !== 'undefined') { %>
+            <% supportedLanguages.forEach(l => { %>
+              <option value="<%= l.code %>" <%= (lang === l.code) ? 'selected' : '' %>>
+                <%= l.label %> (<%= l.name %>)
+              </option>
+            <% }); %>
+          <% } else { %>
+            <option value="en" <%= lang === 'en' ? 'selected' : '' %>>English</option>
+            <option value="hi" <%= lang === 'hi' ? 'selected' : '' %>>हिन्दी (Hindi)</option>
+          <% } %>
+        </select>
+      </div>
+
+      <!-- User Auth State -->
+      <% if (user) { %>
+        <a href="/profile" class="header-user-chip" title="<%= user.name %> (<%= user.email %>)">
+          <div class="user-avatar-mini"><%= user.name ? user.name.charAt(0).toUpperCase() : 'S' %></div>
+          <span class="user-chip-name"><%= user.name ? user.name.split(' ')[0] : 'Student' %></span>
+        </a>
+      <% } else { %>
+        <div class="header-auth-buttons">
+          <a href="/auth/login" class="btn btn-sm btn-outline-primary"><%= t('navLogin') %></a>
+          <a href="/auth/register" class="btn btn-sm btn-primary"><%= t('navRegister') %></a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</header>

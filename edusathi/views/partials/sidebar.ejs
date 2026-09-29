@@ -1,0 +1,138 @@
+<!-- Modern Student Desktop Sidebar -->
+<aside class="app-sidebar" aria-label="Student App Navigation">
+  <div class="sidebar-brand-box">
+    <a href="<%= user ? '/dashboard' : '/' %>" class="brand" aria-label="EduSaarthi Home">
+      <div class="brand-icon" aria-hidden="true">ES</div>
+      <div class="brand-text">
+        <span class="brand-title"><%= t('siteName') %></span>
+        <span class="brand-tagline"><%= t('tagline') %></span>
+      </div>
+    </a>
+  </div>
+
+  <!-- Core Learning Section -->
+  <div class="sidebar-section-label"><%= (lang === 'hi') ? 'मुख्य अध्ययन' : ((lang === 'mr') ? 'मुख्य शिक्षण' : 'Core Learning') %></div>
+  <ul class="sidebar-nav">
+    <li>
+      <a href="/dashboard" class="sidebar-link <%= (typeof activeTab !== 'undefined' && activeTab === 'dashboard') ? 'active' : '' %>">
+        <span class="sidebar-icon">🏠</span>
+        <span class="sidebar-label"><%= t('navDashboard') %></span>
+      </a>
+    </li>
+
+    <li>
+      <a href="/learn" class="sidebar-link <%= (typeof activeTab !== 'undefined' && activeTab === 'learn') ? 'active' : '' %>">
+        <span class="sidebar-icon">📚</span>
+        <span class="sidebar-label"><%= t('navLearn') %></span>
+      </a>
+    </li>
+
+    <li>
+      <a href="/tutor" class="sidebar-link <%= (typeof activeTab !== 'undefined' && activeTab === 'tutor') ? 'active' : '' %>">
+        <span class="sidebar-icon">🤖</span>
+        <span class="sidebar-label">AI Tutor</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="/quizzes" class="sidebar-link <%= (typeof activeTab !== 'undefined' && activeTab === 'quizzes') ? 'active' : '' %>">
+        <span class="sidebar-icon">📝</span>
+        <span class="sidebar-label"><%= t('navQuizzes') %></span>
+      </a>
+    </li>
+
+    <li>
+      <a href="/progress" class="sidebar-link <%= (typeof activeTab !== 'undefined' && activeTab === 'progress') ? 'active' : '' %>">
+        <span class="sidebar-icon">📊</span>
+        <span class="sidebar-label"><%= t('navProgress') %></span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Opportunities & Future Section -->
+  <div class="sidebar-section-label" style="margin-top: 1.25rem;"><%= (lang === 'hi') ? 'अवसर एवं भविष्य' : ((lang === 'mr') ? 'संधी आणि भविष्य' : 'Opportunities & Future') %></div>
+  <ul class="sidebar-nav">
+    <li>
+      <a href="/scholarships" class="sidebar-link <%= (typeof activeTab !== 'undefined' && activeTab === 'scholarships') ? 'active' : '' %>">
+        <span class="sidebar-icon">💰</span>
+        <span class="sidebar-label"><%= t('navScholarships') %></span>
+      </a>
+    </li>
+
+    <li>
+      <a href="/career" class="sidebar-link <%= (typeof activeTab !== 'undefined' && activeTab === 'career') ? 'active' : '' %>">
+        <span class="sidebar-icon">🎯</span>
+        <span class="sidebar-label"><%= t('navCareer') %></span>
+      </a>
+    </li>
+
+    <li>
+      <a href="/mentors" class="sidebar-link <%= (typeof activeTab !== 'undefined' && activeTab === 'mentors') ? 'active' : '' %>">
+        <span class="sidebar-icon">👨‍🏫</span>
+        <span class="sidebar-label"><%= t('navMentors') %></span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Account & Settings Section -->
+  <div class="sidebar-section-label" style="margin-top: 1.25rem;"><%= (lang === 'hi') ? 'खाता एवं प्राथमिकताएं' : ((lang === 'mr') ? 'खाते आणि सेटिंग्ज' : 'Account & Settings') %></div>
+  <ul class="sidebar-nav">
+    <li>
+      <a href="/profile/settings" class="sidebar-link <%= (typeof activeTab !== 'undefined' && activeTab === 'settings') ? 'active' : '' %>">
+        <span class="sidebar-icon">⚙️</span>
+        <span class="sidebar-label"><%= t('navSettings') %></span>
+      </a>
+    </li>
+
+    <li>
+      <a href="/profile" class="sidebar-link <%= (typeof activeTab !== 'undefined' && activeTab === 'profile') ? 'active' : '' %>">
+        <span class="sidebar-icon">👤</span>
+        <span class="sidebar-label"><%= t('navProfile') %></span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Bottom of Sidebar: Language Selector & Low Data Mode Toggle -->
+  <div class="sidebar-footer">
+    <div class="sidebar-controls">
+      <!-- Sidebar Language Selector -->
+      <div class="sidebar-lang-box" title="Change Language">
+        <span class="sidebar-ctrl-icon">🌐</span>
+        <select id="sidebar-lang-select" class="lang-select sidebar-select" aria-label="Language Selector">
+          <% if (typeof supportedLanguages !== 'undefined') { %>
+            <% supportedLanguages.forEach(l => { %>
+              <option value="<%= l.code %>" <%= (lang === l.code) ? 'selected' : '' %>>
+                <%= l.label %> (<%= l.name %>)
+              </option>
+            <% }); %>
+          <% } else { %>
+            <option value="en" <%= lang === 'en' ? 'selected' : '' %>>English</option>
+            <option value="hi" <%= lang === 'hi' ? 'selected' : '' %>>हिन्दी (Hindi)</option>
+          <% } %>
+        </select>
+      </div>
+
+      <!-- Sidebar Low Data Mode Toggle -->
+      <button type="button" class="sidebar-toggle-btn <%= (typeof lowData !== 'undefined' && lowData) ? 'active' : '' %>" id="sidebar-low-data-toggle" title="Low Data Mode">
+        <span class="sidebar-ctrl-icon">📶</span>
+        <span class="sidebar-ctrl-text"><%= (typeof lowData !== 'undefined' && lowData) ? 'Low Data: ON' : 'Low Data Mode' %></span>
+      </button>
+    </div>
+
+    <% if (user) { %>
+      <div class="sidebar-user-card">
+        <div class="sidebar-avatar"><%= user.name ? user.name.charAt(0).toUpperCase() : 'S' %></div>
+        <div class="sidebar-user-info">
+          <span class="sidebar-user-name"><%= user.name %></span>
+          <span class="sidebar-user-email"><%= user.education_level || 'Class 10' %></span>
+        </div>
+        <a href="/auth/logout" class="sidebar-logout-btn" title="<%= t('navLogout') %>">🚪</a>
+      </div>
+    <% } else { %>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+        <a href="/auth/login" class="btn btn-sm btn-outline-primary" style="flex: 1; text-align: center;"><%= t('navLogin') %></a>
+        <a href="/auth/register" class="btn btn-sm btn-primary" style="flex: 1; text-align: center;"><%= t('navRegister') %></a>
+      </div>
+    <% } %>
+  </div>
+</aside>

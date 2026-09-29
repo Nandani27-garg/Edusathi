@@ -1,0 +1,130 @@
+<%- include('partials/header', { pageTitle: (lang === 'hi') ? 'छात्र प्रोफ़ाइल' : 'Student Profile' }) %>
+<%- include('partials/navbar', { activeTab: 'profile' }) %>
+
+<div class="app-layout">
+  <%- include('partials/sidebar', { activeTab: 'profile' }) %>
+
+  <main class="app-content">
+    <div class="content-header">
+      <div>
+        <h1 class="page-title">
+          <span>👤</span>
+          <span><%= (lang === 'hi') ? 'छात्र प्रोफ़ाइल' : 'Student Profile' %></span>
+        </h1>
+        <p class="page-subtitle">
+          <%= (lang === 'hi') ? 'अपनी व्यक्तिगत और शैक्षणिक जानकारी प्रबंधित करें।' : 'Manage your personal educational profile, target career goals, and enrolled subjects.' %>
+        </p>
+      </div>
+
+      <div>
+        <a href="/profile/settings" class="btn btn-secondary">
+          ⚙️ <%= (lang === 'hi') ? 'प्राथमिकताएं / सेटिंग्स' : 'Preferences & Settings' %>
+        </a>
+      </div>
+    </div>
+
+    <div class="profile-layout-grid">
+      <!-- Profile Hero Card -->
+      <div class="card profile-info-card">
+        <div class="profile-avatar-box">
+          <div class="profile-avatar-large">
+            <%= profileUser.name ? profileUser.name.charAt(0).toUpperCase() : 'S' %>
+          </div>
+          <h2 style="font-size: 1.35rem; font-weight: 800; margin: 0.5rem 0 0.15rem; color: var(--text-main);">
+            <%= profileUser.name %>
+          </h2>
+          <span style="font-size: 0.85rem; color: var(--text-muted);"><%= profileUser.email %></span>
+          <div style="margin-top: 0.5rem; display: flex; gap: 0.35rem; justify-content: center; flex-wrap: wrap;">
+            <span class="badge badge-primary"><%= profileUser.education_level %></span>
+            <span class="badge badge-slate">📍 <%= profileUser.state %></span>
+          </div>
+        </div>
+
+        <div class="profile-metrics-box">
+          <div class="metric-item">
+            <span class="metric-val"><%= completedCount %></span>
+            <span class="metric-lbl"><%= (lang === 'hi') ? 'पाठ पूर्ण' : 'Lessons' %></span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-val"><%= quizCount %></span>
+            <span class="metric-lbl"><%= (lang === 'hi') ? 'क्विज़' : 'Quizzes' %></span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-val">7🔥</span>
+            <span class="metric-lbl"><%= (lang === 'hi') ? 'स्ट्रीक' : 'Streak' %></span>
+          </div>
+        </div>
+
+        <div style="padding: 1.25rem; border-top: 1px solid var(--border);">
+          <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem;">
+            🎯 <%= (lang === 'hi') ? 'लक्ष्य करियर' : 'Career Aspiration' %>
+          </h4>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0;">
+            <%= settings.target_career || 'Civil Services / Technology' %>
+          </p>
+
+          <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin: 1rem 0 0.5rem;">
+            🏫 <%= (lang === 'hi') ? 'संस्थान / विद्यालय' : 'College / School' %>
+          </h4>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0;">
+            <%= settings.college_name || 'Birsa Munda Inter College, Ranchi' %>
+          </p>
+        </div>
+      </div>
+
+      <!-- Edit Profile Details Form -->
+      <div class="card profile-edit-card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--text-main);">
+          <%= (lang === 'hi') ? 'शैक्षणिक विवरण अपडेट करें' : 'Update Profile Information' %>
+        </h3>
+
+        <form action="/profile/update" method="POST" class="auth-form" style="max-width: 100%;">
+          <div class="form-group">
+            <label for="name"><%= (lang === 'hi') ? 'पूरा नाम' : 'Full Name' %></label>
+            <input type="text" id="name" name="name" class="form-input" value="<%= profileUser.name %>" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label for="state"><%= (lang === 'hi') ? 'राज्य' : 'State' %></label>
+              <input type="text" id="state" name="state" class="form-input" value="<%= profileUser.state %>">
+            </div>
+
+            <div class="form-group">
+              <label for="education_level"><%= (lang === 'hi') ? 'कक्षा / स्तर' : 'Education Level' %></label>
+              <select id="education_level" name="education_level" class="form-input">
+                <option value="Class 10" <%= profileUser.education_level === 'Class 10' ? 'selected' : '' %>>Class 10</option>
+                <option value="Class 11" <%= profileUser.education_level === 'Class 11' ? 'selected' : '' %>>Class 11</option>
+                <option value="Class 12" <%= profileUser.education_level === 'Class 12' ? 'selected' : '' %>>Class 12</option>
+                <option value="Undergraduate" <%= profileUser.education_level === 'Undergraduate' ? 'selected' : '' %>>Undergraduate (BA / BSc / BCom)</option>
+                <option value="Vocational / ITI" <%= profileUser.education_level === 'Vocational / ITI' ? 'selected' : '' %>>Vocational / ITI / Polytechnic</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="college_name"><%= (lang === 'hi') ? 'कॉलेज या स्कूल का नाम' : 'College or School Name' %></label>
+            <input type="text" id="college_name" name="college_name" class="form-input" value="<%= settings.college_name %>">
+          </div>
+
+          <div class="form-group">
+            <label for="target_career"><%= (lang === 'hi') ? 'लक्ष्य करियर' : 'Target Career Goal' %></label>
+            <input type="text" id="target_career" name="target_career" class="form-input" value="<%= settings.target_career %>">
+          </div>
+
+          <div class="form-group">
+            <label for="subjects"><%= (lang === 'hi') ? 'अध्ययन के मुख्य विषय' : 'Primary Subjects of Study' %></label>
+            <input type="text" id="subjects" name="subjects" class="form-input" value="<%= settings.subjects %>">
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem;">
+            💾 <%= (lang === 'hi') ? 'परिवर्तन सहेजें' : 'Save Changes' %>
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+<%- include('partials/bottom-nav', { activeTab: 'profile' }) %>
+<%- include('partials/footer') %>

@@ -1,0 +1,71 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h4>EduSaarthi (एडू-सारथी)</h4>
+        <p style="margin-bottom: 0.75rem; color: #94A3B8;">
+          <%= (lang === 'hi') ? 'दूरदराज और जनजातीय क्षेत्रों के विद्यार्थियों के लिए डिजिटल शिक्षा साथी। बिना इंटरनेट और भाषा की बाधा के सीखना जारी रखें।' : 'A digital education companion designed around the actual limitations of rural and tribal students. Learn anytime, anywhere.' %>
+        </p>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <span class="badge badge-success" style="font-size: 0.75rem;">PWA Offline-Ready</span>
+          <span class="badge badge-warning" style="font-size: 0.75rem;">Low-Data Optimized</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h5><%= (lang === 'hi') ? 'मुख्य विषय' : 'Core Learning' %></h5>
+        <ul>
+          <li><a href="/learn"><%= (lang === 'hi') ? 'कक्षा 10 विज्ञान' : 'Class 10 Science' %></a></li>
+          <li><a href="/learn"><%= (lang === 'hi') ? 'गणित समाधान' : 'Mathematics' %></a></li>
+          <li><a href="/learn"><%= (lang === 'hi') ? 'अंग्रेज़ी भाषा' : 'English Foundations' %></a></li>
+          <li><a href="/learn"><%= (lang === 'hi') ? 'डिजिटल साक्षरता' : 'Digital Literacy' %></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5><%= (lang === 'hi') ? 'स्मार्ट टूल्स' : 'Smart Tools' %></h5>
+        <ul>
+          <li><a href="/tutor"><%= (lang === 'hi') ? 'एआई ट्यूटर (द्विभाषी)' : 'AI Tutor (Bilingual)' %></a></li>
+          <li><a href="/scholarships"><%= (lang === 'hi') ? 'छात्रवृत्ति खोज' : 'Scholarship Finder' %></a></li>
+          <li><a href="/career"><%= (lang === 'hi') ? 'करियर रोडमैप' : 'Career Roadmaps' %></a></li>
+          <li><a href="/mentors"><%= (lang === 'hi') ? 'ग्रामीण मेंटर्स' : 'Rural Mentors' %></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5><%= (lang === 'hi') ? 'प्रोटोटाइप सूचना' : 'Prototype Notice' %></h5>
+        <p style="font-size: 0.8rem; line-height: 1.5; color: #94A3B8;">
+          <%= (lang === 'hi') ? 'यह एक हैकाथॉन प्रोटोटाइप है। छात्रवृत्ति और परीक्षा की जानकारी आधिकारिक सरकारी पोर्टल (scholarships.gov.in) से सत्यापित करें।' : 'Hackathon MVP prototype. Verify official scholarship eligibility and deadlines directly on national government portals.' %>
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 EduSaarthi Team. Designed for inclusive educational impact. Built with Node.js, SQLite, PWA, and Gemini AI.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast Notifications Container -->
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<!-- Client Scripts -->
+<script src="/js/main.js"></script>
+<script src="/js/offline-storage.js"></script>
+
+<!-- Service Worker Registration for Offline First PWA -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => {
+          console.log('EduSaarthi PWA ServiceWorker registered with scope:', reg.scope);
+        })
+        .catch(err => {
+          console.log('ServiceWorker registration skipped or failed:', err);
+        });
+    });
+  }
+</script>
+</body>
+</html>

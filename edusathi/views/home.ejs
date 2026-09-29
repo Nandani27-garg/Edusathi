@@ -1,0 +1,260 @@
+<%- include('partials/header', { pageTitle: (lang === 'hi') ? 'होम - बाधाओं के बिना शिक्षा' : 'Home - Learning Without Barriers' }) %>
+<%- include('partials/navbar', { activeTab: 'home' }) %>
+
+<main id="main-content">
+  <!-- Clean Modern Hero Section -->
+  <section class="hero-section" aria-labelledby="hero-heading">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <!-- Small Badge -->
+        <div class="hero-badge-wrap">
+          <span class="hero-pill">
+            <span class="hero-pill-dot"></span>
+            <span><%= (lang === 'hi') ? 'कनेक्टिविटी की सीमाओं से परे विद्यार्थियों के लिए' : 'Built for learners beyond connectivity' %></span>
+          </span>
+        </div>
+
+        <!-- Main Heading -->
+        <h1 id="hero-heading" class="hero-title">
+          <%= (lang === 'hi') ? 'बाधाओं के बिना शिक्षा।' : 'Learning Without Barriers.' %>
+        </h1>
+
+        <!-- Clean 2-line Subheading -->
+        <p class="hero-subtitle">
+          <%= (lang === 'hi') 
+            ? 'कमजोर या बिना इंटरनेट वाले विद्यार्थियों के लिए विशेष रूप से निर्मित एआई-संचालित शिक्षा के साथ सीखें, अभ्यास करें और आगे बढ़ें।' 
+            : 'Learn, practice and grow with AI-powered education designed for students with limited connectivity.' %>
+        </p>
+
+        <!-- Two Primary Buttons -->
+        <div class="hero-actions">
+          <a href="<%= user ? '/dashboard' : '/auth/login' %>" class="btn btn-primary btn-lg">
+            <span><%= (lang === 'hi') ? 'सीखना शुरू करें' : 'Start Learning' %></span>
+            <span>→</span>
+          </a>
+          <a href="#features" class="btn btn-secondary btn-lg">
+            <span><%= (lang === 'hi') ? 'एडू-सारथी जानें' : 'Explore EduSaarthi' %></span>
+          </a>
+        </div>
+
+        <!-- Trust / Offline Note -->
+        <div class="hero-trust-note">
+          <span class="trust-icon">📶</span>
+          <span class="trust-text">
+            <strong><%= (lang === 'hi') ? 'ऑफ़लाइन अध्ययन उपलब्ध:' : 'Offline Learning Available:' %></strong>
+            <%= (lang === 'hi') 
+              ? 'इंटरनेट न होने पर भी डाउनलोड किए गए पाठों से निरंतर पढ़ाई जारी रखें।' 
+              : 'Download selected lessons and continue learning when connectivity is unavailable.' %>
+          </span>
+        </div>
+      </div>
+
+      <!-- Right Side: Single Clean Product Preview Card (No complex diagrams) -->
+      <div class="hero-visual">
+        <div class="product-preview-card">
+          <div class="preview-card-header">
+            <div class="preview-student-info">
+              <span class="preview-avatar">🧑‍🎓</span>
+              <div>
+                <span class="preview-name"><%= (lang === 'hi') ? 'रोहित मुर्मू' : 'Rohit Murmu' %></span>
+                <span class="preview-grade"><%= (lang === 'hi') ? 'कक्षा 10 • विज्ञान संकाय' : 'Class 10 • Science' %></span>
+              </div>
+            </div>
+            <span class="badge badge-success preview-badge">
+              ✓ <%= (lang === 'hi') ? 'ऑफ़लाइन उपलब्ध' : 'Available Offline' %>
+            </span>
+          </div>
+
+          <!-- Active Course Preview -->
+          <div class="preview-course-box">
+            <div class="preview-subject-tag"><%= (lang === 'hi') ? 'विज्ञान एवं प्रौद्योगिकी' : 'Science & Environment' %></div>
+            <h3 class="preview-course-title">
+              <%= (lang === 'hi') ? 'सौर ऊर्जा एवं पर्यावरण विज्ञान' : 'Solar Energy & Physical Science' %>
+            </h3>
+            <div class="preview-next-lesson">
+              <span class="next-pill"><%= (lang === 'hi') ? 'अगला पाठ' : 'Next' %></span>
+              <span><%= (lang === 'hi') ? 'पाठ 3: प्रकाश संश्लेषण और सौर विकिरण' : 'Lesson 3 — How Photosynthesis Works' %></span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="preview-progress-wrapper">
+              <div class="preview-progress-labels">
+                <span><%= (lang === 'hi') ? 'पाठ्यक्रम प्रगति' : 'Course Progress' %></span>
+                <strong>68%</strong>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width: 68%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview Features Row -->
+          <div class="preview-features-row">
+            <div class="preview-feature-item">
+              <span class="pf-icon">🤖</span>
+              <span class="pf-text"><%= (lang === 'hi') ? 'एआई ट्यूटर सहायता' : 'AI Doubt Solver' %></span>
+            </div>
+            <div class="preview-feature-item">
+              <span class="pf-icon">🌐</span>
+              <span class="pf-text"><%= (lang === 'hi') ? 'मातृभाषा में समझ' : 'Regional Languages' %></span>
+            </div>
+            <div class="preview-feature-item">
+              <span class="pf-icon">🎓</span>
+              <span class="pf-text"><%= (lang === 'hi') ? 'छात्रवृत्ति खोज' : 'Scholarships' %></span>
+            </div>
+          </div>
+
+          <!-- Explanatory subtext -->
+          <div class="preview-offline-note">
+            <span>💾</span>
+            <span><%= (lang === 'hi') ? 'चयनित पाठ ऑफ़लाइन उपलब्ध: बिना नेटवर्क भी पढ़ाई जारी।' : 'Selected Lessons Available Offline: Study seamlessly without internet.' %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Why EduSaarthi? (4 Clean Cards) -->
+  <section id="features" class="section">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-tag"><%= (lang === 'hi') ? 'विशेषताएं' : 'Why EduSaarthi?' %></div>
+        <h2 class="section-title"><%= (lang === 'hi') ? 'वास्तविक सीमाओं को ध्यान में रखकर तैयार' : 'Built for the Real Constraints of Real Students' %></h2>
+        <p class="section-desc">
+          <%= (lang === 'hi') ? 'हम केवल सॉफ्टवेयर नहीं बना रहे, बल्कि उन बाधाओं को दूर कर रहे हैं जो लाखों होनहार छात्रों को पीछे रखती हैं।' : 'Designed specifically to bridge infrastructure, economic, and regional barriers.' %>
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Card 1: Offline Learning -->
+        <article class="feature-card">
+          <div class="feature-icon-wrap" style="background: #EFF6FF; color: #2563EB;">
+            📶
+          </div>
+          <h3 class="feature-title"><%= (lang === 'hi') ? '1. ऑफ़लाइन अध्ययन उपलब्ध' : '1. Offline Learning Available' %></h3>
+          <p class="feature-text">
+            <%= (lang === 'hi') ? 'चयनित पाठ और क्विज़ को डाउनलोड करें और इंटरनेट न होने पर भी पढ़ाई जारी रखें।' : 'Download selected lessons and continue learning when connectivity is unavailable.' %>
+          </p>
+        </article>
+
+        <!-- Card 2: Regional Languages -->
+        <article class="feature-card">
+          <div class="feature-icon-wrap" style="background: #FEF3C7; color: #D97706;">
+            🌐
+          </div>
+          <h3 class="feature-title"><%= (lang === 'hi') ? '2. क्षेत्रीय भाषाएं' : '2. Regional Languages' %></h3>
+          <p class="feature-text">
+            <%= (lang === 'hi') ? 'अपनी समझ की भाषा में सीखें, कठिन शब्दों के अर्थ जानें और बेझिझक सवाल पूछें।' : 'Learn and ask questions in Hindi and Indian regional languages you understand best.' %>
+          </p>
+        </article>
+
+        <!-- Card 3: AI Tutor -->
+        <article class="feature-card">
+          <div class="feature-icon-wrap" style="background: #ECFDF5; color: #059669;">
+            🤖
+          </div>
+          <h3 class="feature-title"><%= (lang === 'hi') ? '3. एआई ट्यूटर' : '3. AI Tutor' %></h3>
+          <p class="feature-text">
+            <%= (lang === 'hi') ? 'दैनिक जीवन के व्यावहारिक उदाहरणों के साथ विज्ञान और गणित के कठिन विषयों को आसानी से समझें।' : 'Ask doubts anytime. Receive clear explanations and step-by-step guidance tailored to you.' %>
+          </p>
+        </article>
+
+        <!-- Card 4: Career & Scholarships -->
+        <article class="feature-card">
+          <div class="feature-icon-wrap" style="background: #F3E8FF; color: #7C3AED;">
+            🎓
+          </div>
+          <h3 class="feature-title"><%= (lang === 'hi') ? '4. छात्रवृत्तियां एवं करियर' : '4. Career & Scholarships' %></h3>
+          <p class="feature-text">
+            <%= (lang === 'hi') ? 'सरकारी योजनाओं, छात्रवृत्तियों और भविष्य के करियर विकल्पों की सही जानकारी प्राप्त करें।' : 'Discover scholarships matching your profile and chart step-by-step career roadmaps.' %>
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Problem vs Solution Matrix -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-tag"><%= (lang === 'hi') ? 'समाधान' : 'Direct Solutions' %></div>
+        <h2 class="section-title"><%= (lang === 'hi') ? 'चुनौतियों का व्यावहारिक समाधान' : 'Bridging Every Learning Gap' %></h2>
+        <p class="section-desc">
+          <%= (lang === 'hi') ? 'ग्रामीण और पिछड़े क्षेत्रों के विद्यार्थियों की बुनियादी मुश्किलों का प्रभावी उत्तर।' : 'Directly addressing connectivity, linguistic, mentorship, and financial bottlenecks.' %>
+        </p>
+      </div>
+
+      <div class="challenge-grid">
+        <div class="challenge-card">
+          <div class="challenge-top">
+            <span>📶</span>
+            <span><%= (lang === 'hi') ? 'कमजोर इंटरनेट' : 'Poor Connectivity' %></span>
+          </div>
+          <div class="challenge-bottom">
+            <span class="challenge-arrow">➔</span>
+            <span><%= (lang === 'hi') ? 'लो-डेटा मोड एवं ऑफ़लाइन पाठ' : 'Low-data mode & offline lessons' %></span>
+          </div>
+        </div>
+
+        <div class="challenge-card">
+          <div class="challenge-top">
+            <span>🌐</span>
+            <span><%= (lang === 'hi') ? 'भाषा की बाधा' : 'Language Barriers' %></span>
+          </div>
+          <div class="challenge-bottom">
+            <span class="challenge-arrow">➔</span>
+            <span><%= (lang === 'hi') ? 'हिन्दी एवं क्षेत्रीय भाषा समर्थन' : 'Regional language support' %></span>
+          </div>
+        </div>
+
+        <div class="challenge-card">
+          <div class="challenge-top">
+            <span>🤔</span>
+            <span><%= (lang === 'hi') ? 'विषय समझने में संकोच' : 'Learning Doubts' %></span>
+          </div>
+          <div class="challenge-bottom">
+            <span class="challenge-arrow">➔</span>
+            <span><%= (lang === 'hi') ? 'एआई ट्यूटर से सहज मार्गदर्शन' : 'Encouraging AI tutor explanations' %></span>
+          </div>
+        </div>
+
+        <div class="challenge-card">
+          <div class="challenge-top">
+            <span>🎓</span>
+            <span><%= (lang === 'hi') ? 'जानकारी का अभाव' : 'Opportunity Gap' %></span>
+          </div>
+          <div class="challenge-bottom">
+            <span class="challenge-arrow">➔</span>
+            <span><%= (lang === 'hi') ? 'छात्रवृत्ति खोज एवं करियर रोडमैप' : 'Scholarships & career roadmaps' %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom CTA Banner -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-box">
+        <h2><%= (lang === 'hi') ? 'आज ही अपनी पढ़ाई शुरू करें' : 'Start Your Learning Journey Today' %></h2>
+        <p>
+          <%= (lang === 'hi') 
+            ? 'बिना किसी रुकावट के डेमो विद्यार्थी खाते से तुरंत लॉगिन करें और सभी सुविधाओं का अनुभव लें।' 
+            : 'Access interactive lessons, practice quizzes, AI tutor, and scholarship discovery in one unified platform.' %>
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <form action="/auth/demo-login" method="POST" style="margin: 0;">
+            <button type="submit" class="btn btn-accent btn-lg">
+              <span><%= (lang === 'hi') ? '⚡ 1-क्लिक डेमो लॉगिन' : '⚡ 1-Click Demo Login' %></span>
+            </button>
+          </form>
+          <a href="/auth/register" class="btn btn-secondary btn-lg" style="background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.3);">
+            <span><%= (lang === 'hi') ? 'नया खाता बनाएं' : 'Create Account' %></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('partials/footer') %>
