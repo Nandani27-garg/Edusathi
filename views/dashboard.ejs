@@ -35,24 +35,24 @@
       <div class="continue-card-primary">
         <div class="continue-card-body">
           <div class="continue-course-header">
-            <span class="badge badge-primary"><%= continueLesson.course_title || 'Human Geography' %></span>
+            <span class="badge badge-primary"><%= continueLesson.course_title %></span>
             <span class="badge badge-success">✓ <%= (lang === 'hi') ? 'ऑफ़लाइन उपलब्ध' : 'Available Offline' %></span>
           </div>
 
           <h2 class="continue-lesson-heading">
-            <%= (lang === 'hi') ? (continueLesson.title_hi || continueLesson.title) : (continueLesson.title || 'Chapter 3 — Population Distribution') %>
+            <%= (lang === 'hi') ? continueLesson.title_hi : continueLesson.title %>
           </h2>
 
           <div class="continue-progress-row">
             <div class="progress-bar-bg">
-              <div class="progress-bar-fill" style="width: <%= continueLesson.progressPct || 68 %>%;"></div>
+              <div class="progress-bar-fill" style="width: <%= continueLesson.progressPct %>%;"></div>
             </div>
             <span class="progress-pct-badge"><%= continueLesson.progressPct || 68 %>% <%= (lang === 'hi') ? 'पूर्ण' : 'complete' %></span>
           </div>
         </div>
 
         <div class="continue-card-action">
-          <a href="/learn/lesson/<%= continueLesson.id || 1 %>" class="btn btn-primary btn-lg continue-btn">
+          <a href="/learn/lesson/<%= continueLesson.id %>" class="btn btn-primary btn-lg continue-btn">
             <span><%= (lang === 'hi') ? 'पढ़ना जारी रखें' : 'Continue Learning' %></span>
             <span>→</span>
           </a>
@@ -73,7 +73,7 @@
           <div class="stat-clean-icon" style="background-color: #EFF6FF; color: #2563EB;">📚</div>
           <div class="stat-clean-details">
             <span class="stat-clean-title"><%= (lang === 'hi') ? 'कोर्स' : 'Courses' %></span>
-            <strong class="stat-clean-value"><%= stats.completedCourses || 4 %> <%= (lang === 'hi') ? 'पूर्ण' : 'completed' %></strong>
+            <strong class="stat-clean-value"><%= stats.completedCourses %> <%= (lang === 'hi') ? 'पूर्ण' : 'completed' %></strong>
           </div>
         </div>
 
@@ -82,7 +82,7 @@
           <div class="stat-clean-icon" style="background-color: #FEF3C7; color: #D97706;">🔥</div>
           <div class="stat-clean-details">
             <span class="stat-clean-title"><%= (lang === 'hi') ? 'अध्ययन स्ट्रीक' : 'Study Streak' %></span>
-            <strong class="stat-clean-value"><%= stats.streakDays || 7 %> <%= (lang === 'hi') ? 'दिन' : 'days' %></strong>
+            <strong class="stat-clean-value"><%= stats.streakDays ?? '—' %> <%= (lang === 'hi') ? 'दिन' : 'days' %></strong>
           </div>
         </div>
 
@@ -91,7 +91,7 @@
           <div class="stat-clean-icon" style="background-color: #FAF5FF; color: #9333EA;">🎯</div>
           <div class="stat-clean-details">
             <span class="stat-clean-title"><%= (lang === 'hi') ? 'क्विज़ औसत' : 'Quiz Average' %></span>
-            <strong class="stat-clean-value"><%= stats.quizScore || 82 %>%</strong>
+            <strong class="stat-clean-value"><%= stats.quizScore %>%</strong>
           </div>
         </div>
 
@@ -100,7 +100,7 @@
           <div class="stat-clean-icon" style="background-color: #ECFDF5; color: #059669;">⏱️</div>
           <div class="stat-clean-details">
             <span class="stat-clean-title"><%= (lang === 'hi') ? 'अध्ययन समय' : 'Study Time' %></span>
-            <strong class="stat-clean-value"><%= stats.studyTime || '12h 40m' %></strong>
+            <strong class="stat-clean-value"><%= stats.studyTime %></strong>
           </div>
         </div>
       </div>
