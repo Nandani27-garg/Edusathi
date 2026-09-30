@@ -138,6 +138,8 @@ Use this exact flow during judging:
 - **Password:** `Demo@123`
 - **Fastest option:** use **1-Click Demo Login** — no password entry required.
 
+> Demo data is intentionally seeded for judging and local testing; mentor profiles, scholarship records and learner details are prototype/demo records, not verified real-world profiles.
+
 ---
 
 # 🏗️ Technical Architecture
@@ -452,7 +454,7 @@ The prototype demonstrates:
 - Voice accessibility
 - Opportunity discovery
 - Career guidance
-- Mentorship workflow
+- Mentorship workflow (login required to send requests)
 - A practical production roadmap
 
 The key product principle is:
