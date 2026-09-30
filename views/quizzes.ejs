@@ -34,7 +34,7 @@
             <div class="challenge-info">
               <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
                 <span class="badge badge-primary"><%= dailyChallenge.category %></span>
-                <span class="difficulty-tag <%= dailyChallenge.difficulty.toLowerCase() %>"><%= dailyChallenge.difficulty %></span>
+                <span class="difficulty-tag <%= String(dailyChallenge.difficulty || 'Medium').toLowerCase() %>"><%= dailyChallenge.difficulty || 'Medium' %></span>
               </div>
               <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.4rem;">
                 <%= (lang === 'hi') ? dailyChallenge.title_hi : dailyChallenge.title %>
@@ -90,7 +90,7 @@
               <span>•</span>
               <span>❓ <%= quiz.total_questions %> Qs</span>
               <span>•</span>
-              <span class="difficulty-tag <%= quiz.difficulty.toLowerCase() %>"><%= quiz.difficulty %></span>
+              <span class="difficulty-tag <%= String(quiz.difficulty || 'Medium').toLowerCase() %>"><%= quiz.difficulty || 'Medium' %></span>
             </div>
 
             <div style="margin-top: 1rem;">
