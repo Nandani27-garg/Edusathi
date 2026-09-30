@@ -177,7 +177,7 @@ app.get('/dashboard', requireAuth, (req, res) => {
   `) || db.get(`SELECT * FROM quizzes ORDER BY id ASC LIMIT 1`);
 
   // 5. Active Continuing Lesson
-  const continueLesson = db.get(`
+  let continueLesson = db.get(`
     SELECT l.*, c.title as course_title, c.title_hi as course_title_hi, c.color as course_color
     FROM lessons l
     JOIN courses c ON l.course_id = c.id
@@ -186,11 +186,25 @@ app.get('/dashboard', requireAuth, (req, res) => {
     LIMIT 1
   `, [userId]);
 
-  // 6. Matching scholarships preview
+  if (continueLesson) {
+    const courseTotal = db.get(
+      'SELECT COUNT(*) as count FROM lessons WHERE course_id = ?',
+      [continueLesson.course_id]
+    );
+    const courseCompleted = db.get(
+      'SELECT COUNT(*) as count FROM progress p JOIN lessons l ON p.lesson_id = l.id WHERE p.user_id = ? AND l.course_id = ? AND p.completed = 1',
+      [userId, continueLesson.course_id]
+    );
+    const total = courseTotal ? courseTotal.count : 0;
+    const completed = courseCompleted ? courseCompleted.count : 0;
+    continueLesson.progressPct = total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
+  }
+
+  // 6. Featured scholarship preview
+  // These are prototype records, so do not present them as personalized eligibility matches.
   const scholarshipsPreview = db.query(`
-    SELECT * FROM scholarships 
-    WHERE max_income >= 250000 
-    ORDER BY id ASC 
+    SELECT * FROM scholarships
+    ORDER BY id ASC
     LIMIT 3
   `);
 
