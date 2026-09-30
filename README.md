@@ -1,205 +1,184 @@
 # 🎓 EduSaarthi — Learning Without Barriers
 
-> **An inclusive, multilingual, offline-first AI learning and career companion designed to make quality education, guidance and opportunities more accessible.**
+> **An inclusive, multilingual, offline-first AI learning and career companion for students facing connectivity, language and guidance barriers.**
 
-**EduSaarthi is currently a functional hackathon prototype/MVP.**  
-The prototype validates the core product idea and technical direction. The full production-grade platform is planned as the next phase, with stronger AI, verified data, scalable infrastructure, accessibility and real-world deployment.
+**EduSaarthi is a functional hackathon prototype/MVP.**  
+The prototype focuses on validating the core user journey. Production deployment will add verified data sources, stronger AI evaluation, scalable infrastructure and real-world institutional partnerships.
 
 ---
 
-## 🌍 The Problem
+## 🚀 What Problem Are We Solving?
 
-For many students, especially those in underserved and low-connectivity communities, the challenge is not a lack of ambition — it is a lack of **access**.
+Many students face more than one barrier at the same time:
 
-Students can face:
-
-- 📡 Unreliable or expensive internet connectivity
-- 🌐 Language barriers in educational content
-- 🤖 Lack of instant academic doubt support
-- 🎓 Limited awareness of scholarships and opportunities
-- 🧭 Lack of structured career guidance
+- 📡 Unreliable or expensive internet
+- 🌐 Limited access to learning in a comfortable language
+- 🤖 No immediate academic doubt support
+- 🎓 Low awareness of scholarships and opportunities
+- 🧭 Unstructured career exploration
 - 👨‍🏫 Limited access to mentors
-- 🎙️ Difficulty using text-heavy platforms
-- 🔄 Multiple disconnected platforms for different needs
+- 🎙️ Text-heavy interfaces that are difficult to use
 
-### Our question
+EduSaarthi brings these needs into one student-focused platform.
 
-**What if one platform could bring learning, AI assistance, accessibility, opportunities and guidance together — while still working in low-connectivity environments?**
+### Our core idea
 
-That is the idea behind **EduSaarthi**.
-
----
-
-# 💡 Our Solution
-
-EduSaarthi is designed as a **digital education companion** rather than just another LMS or AI chatbot.
-
-It brings together:
-
-**📚 Learning + 🤖 AI Tutor + 🌐 Multilingual Support + 📡 Offline Access + 🎙️ Voice + 🎓 Scholarships + 🧭 Career Guidance + 👨‍🏫 Mentorship**
-
-The platform is designed around the student, adapting to constraints such as language, connectivity and access to guidance.
+> **Learning should adapt to the student's constraints — not force the student to adapt to the platform.**
 
 ---
 
-# ⭐ Key Innovation
+## 💡 Proposed Solution
 
-## AI + Accessibility + Offline-First Learning + Opportunity Discovery
+EduSaarthi combines:
 
-Most digital learning platforms assume that students have:
+**📚 Learning + 🤖 AI Tutor + 🌐 Multilingual Support + 📡 Offline Access + 🎙️ Voice + 🎓 Opportunity Discovery + 🧭 Career Guidance + 👨‍🏫 Mentorship**
 
-- Stable internet
-- Strong English proficiency
-- Easy access to teachers/mentors
-- Continuous access to online resources
-
-EduSaarthi takes a different approach:
-
-> **The platform should adapt to the learner — not the other way around.**
-
-### 1. 🌐 Multilingual Learning
-
-The prototype is designed for multilingual interaction and persistent language selection.
-
-Planned language ecosystem includes major Indian languages and regional-language expansion.
-
-This makes language a **core product capability**, not an afterthought.
+The prototype is intentionally focused on **feasibility and a clear end-to-end experience**, rather than pretending to be a production-scale platform.
 
 ---
 
-### 2. 📡 Offline-First Learning
+## ⭐ What Makes the Prototype Different?
 
-EduSaarthi uses PWA concepts such as:
+### 1. 📡 Offline-first learning
+
+Selected lessons can be downloaded and accessed through browser storage when connectivity is unavailable.
+
+Technology direction:
 
 - Service Worker
 - Cache API
 - IndexedDB
-- Offline lesson storage
-- Low-data interaction
+- Low-data mode
+- Offline lesson API
 
-Students can access previously saved learning material even when connectivity is temporarily unavailable.
+### 2. 🌐 Multilingual learning
 
----
+The interface supports multiple Indian languages, with persistent language selection.
+
+The goal is not only translation, but making educational explanations easier to understand in the learner's preferred language.
 
 ### 3. 🤖 AI Tutor
 
-The platform integrates AI-assisted learning through the **Gemini API**.
+The AI Tutor integrates the Gemini API for:
 
-The AI Tutor is designed to help students:
+- Concept explanations
+- Academic doubts
+- Practice questions
+- Simplified explanations
+- Multilingual interaction
 
-- Understand difficult concepts
-- Get simpler explanations
-- Ask academic doubts
-- Generate practice questions
-- Summarize learning material
-- Interact in supported languages
+If an API key is unavailable, the prototype uses built-in educational fallback responses so the demo can still be explored.
 
-### Production vision
+**Production direction:** verified educational sources + RAG + source attribution + AI evaluation.
 
-The future version will use a verified educational knowledge base and **RAG (Retrieval-Augmented Generation)** to improve factual reliability, contextual answers and source attribution.
+### 4. 🎙️ Voice interaction
 
----
+The prototype explores browser-based Speech-to-Text and Text-to-Speech so students can interact without relying entirely on typing.
 
-### 4. 🎙️ Voice-Based Interaction
+### 5. 🎓 Scholarship discovery
 
-Voice interaction reduces dependence on typing.
-
-The prototype explores:
-
-- Speech-to-Text
-- Text-to-Speech
-- Language-specific voice interaction
-
-This can make digital learning more accessible for students who are more comfortable speaking than typing.
-
----
-
-### 5. 🎓 Scholarship & Opportunity Discovery
-
-EduSaarthi aims to make important opportunities easier to discover.
-
-The prototype provides the foundation for filtering opportunities using factors such as:
+Students can filter prototype opportunity records by factors such as:
 
 - State
 - Category
+- Gender
 - Income
-- Educational background
+- Minimum percentage
+- Disability status
 
-> **Prototype note:** This is currently a concept/prototype workflow. Production deployment will require continuous verification and official/authoritative data integration.
+> ⚠️ **Important:** Scholarship records in this prototype are demonstration data. They must not be treated as verified current government information. Production deployment will integrate and continuously verify official/authoritative sources.
 
----
+### 6. 🧭 Career guidance
 
-### 6. 🧭 Career Guidance
+Students can enter their education level, subjects, interests and skills to receive a structured career roadmap.
 
-Students can explore career directions based on their:
+The feature is designed as **exploration and guidance**, not a guaranteed prediction of a student's future.
 
-- Interests
-- Strengths
-- Preferences
-- Goals
+### 7. 👨‍🏫 Mentorship
 
-The platform can generate a structured roadmap showing what a student can learn next.
+The prototype includes a mentor directory and mentor-request workflow.
 
-Future versions can evolve this into personalized **skill-gap analysis + learning pathways**.
+Production scope includes verified mentors, availability, matching and moderation.
 
 ---
 
-### 7. 👨‍🏫 Digital Mentorship
+# 🧪 60-Second Hackathon Demo Flow
 
-The prototype includes the foundation for mentor discovery and mentor-request workflows.
-
-The production vision is a verified network of:
-
-- Teachers
-- Industry professionals
-- Researchers
-- Engineers
-- Career mentors
-- Local educators
-
----
-
-# 🏗️ Prototype Architecture
+Use this exact flow during judging:
 
 ```
-                    ┌──────────────────────┐
-                    │       STUDENT        │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                 ┌─────────────────────────┐
-                 │    EduSaarthi Web App   │
-                 │       PWA + UI          │
-                 └────────────┬────────────┘
-                              │
-          ┌───────────────────┼───────────────────┐
-          ▼                   ▼                   ▼
-     Learning             AI Tutor           Accessibility
-          │                   │                   │
-          │                   ▼                   ▼
-          │              Gemini API          Voice / Speech
-          │
-          ▼
-    Offline Layer
- Service Worker + IndexedDB
-          │
-          ▼
-    Node.js + Express
-          │
-          ▼
-    Application Data
+1. Open EduSaarthi
+        ↓
+2. Click "1-Click Demo Login"
+        ↓
+3. Open Dashboard
+        ↓
+4. Switch language to Hindi / another supported language
+        ↓
+5. Open AI Tutor
+        ↓
+6. Ask a simple academic question
+        ↓
+7. Try voice interaction
+        ↓
+8. Open a lesson and save it for offline access
+        ↓
+9. Take a short quiz
+        ↓
+10. Show Progress
+        ↓
+11. Show Scholarship filtering
+        ↓
+12. Show Career roadmap / Mentor discovery
 ```
+
+### Demo account
+
+- **Email:** `demo@edusaarthi.test`
+- **Password:** `Demo@123`
+- **Fastest option:** use **1-Click Demo Login** — no password entry required.
 
 ---
 
-# 🛠️ Technology Stack
+# 🏗️ Technical Architecture
+
+```
+                    STUDENT
+                       │
+                       ▼
+              ┌─────────────────┐
+              │ EduSaarthi Web  │
+              │ EJS + JS + PWA  │
+              └────────┬────────┘
+                       │
+       ┌───────────────┼────────────────┐
+       ▼               ▼                ▼
+   Learning         AI Tutor       Accessibility
+       │               │                │
+       │          Gemini API       Voice APIs
+       │
+       ▼
+ Offline Layer
+ Service Worker
+ Cache API
+ IndexedDB
+       │
+       ▼
+ Node.js + Express
+       │
+       ▼
+ SQLite Prototype Database
+```
+
+### Technology Stack
 
 | Layer | Technology |
 |---|---|
-| Backend | Node.js |
-| Web Framework | Express.js |
+| Runtime | Node.js 22+ |
+| Backend | Express.js |
 | Frontend | EJS, HTML5, CSS3, JavaScript |
 | AI | Google Gemini API |
+| Database | SQLite using Node's built-in `node:sqlite` |
 | Offline | Service Worker, Cache API, IndexedDB |
 | Voice | Web Speech API |
 | Authentication | Express Session + bcryptjs |
@@ -215,7 +194,7 @@ The production vision is a verified network of:
 EduSaarthi
 │
 ├── 🤖 AI Tutor
-├── 📚 Learning
+├── 📚 Learning & Lessons
 ├── 📝 Quizzes & Practice
 ├── 📊 Progress Tracking
 ├── 🎓 Scholarship Discovery
@@ -224,243 +203,6 @@ EduSaarthi
 ├── 🌐 Multilingual Support
 ├── 🎙️ Voice Interaction
 └── 📡 Offline Learning
-```
-
----
-
-# 🎯 Prototype User Journey
-
-```
-Student
-   ↓
-Select Language
-   ↓
-Explore Learning Content
-   ↓
-Download / Save Content
-   ↓
-Ask AI Tutor
-   ↓
-Use Voice Interaction
-   ↓
-Practice Through Quiz
-   ↓
-Track Progress
-   ↓
-Discover Opportunities
-   ↓
-Explore Career Roadmap
-   ↓
-Connect With a Mentor
-```
-
-This demonstrates the central product idea:
-
-> **EduSaarthi does not only help students learn. It helps them understand what to learn, how to learn, what opportunities exist, and what they can do next.**
-
----
-
-# 🔐 Security & Responsible AI
-
-The prototype follows basic security practices including:
-
-- Password hashing using bcryptjs
-- Environment variables for secrets
-- Session-based authentication
-- Sensitive configuration kept outside source code
-- `.env` protection through `.gitignore`
-
-### Responsible AI — Production Direction
-
-The production version will prioritize:
-
-- Verified educational sources
-- RAG-based responses
-- Source attribution
-- AI evaluation and testing
-- Hallucination reduction
-- Human verification for high-impact guidance
-- Minimal collection of student data
-- Role-based access control
-- Auditability and privacy-by-design
-
-> **AI should assist students, not become the final authority for high-impact educational or career decisions.**
-
----
-
-# 🚀 Prototype → Production Roadmap
-
-The current repository intentionally focuses on **proof of concept and validation**.
-
-| Area | Prototype | Production Vision |
-|---|---|---|
-| AI | Gemini API integration | RAG + verified knowledge base |
-| Data | Prototype data | Verified official/partner data |
-| Database | Lightweight prototype storage | Scalable cloud database |
-| Offline | PWA + browser storage | Advanced sync & offline-first architecture |
-| Voice | Browser speech APIs | Regional-language voice/IVR capabilities |
-| Scholarships | Discovery workflow | Verified official integrations |
-| Mentorship | Request workflow | Verified mentor ecosystem |
-| Analytics | Basic progress | Personalized learning analytics |
-| Infrastructure | Prototype deployment | Cloud-native scalable architecture |
-| Security | Core safeguards | RBAC, encryption, audit & compliance |
-| Accessibility | Responsive + voice | Comprehensive accessibility testing |
-
----
-
-# 🌱 Future Scope
-
-### 🔹 Personalized Learning Engine
-
-Use student performance to identify:
-
-```
-What the student knows
-        ↓
-Where the student struggles
-        ↓
-What should be learned next
-        ↓
-Which resource should be recommended
-```
-
-### 🔹 Regional-Language Intelligence
-
-Move beyond direct translation toward educational explanations that are naturally understandable in local languages.
-
-### 🔹 Low-Connectivity Ecosystem
-
-Extend offline learning to schools, community centres and areas with intermittent connectivity.
-
-### 🔹 Verified Opportunity Layer
-
-Bring together:
-
-- Scholarships
-- Competitions
-- Internships
-- Entrance examinations
-- Courses
-- Government education initiatives
-
-### 🔹 Verified Mentorship Network
-
-Match students and mentors using:
-
-- Subject
-- Career interest
-- Language
-- Location
-- Availability
-
----
-
-# 📈 Expected Impact
-
-EduSaarthi aims to reduce the **access gap** in education.
-
-### For Students
-
-- More accessible learning
-- Reduced language barriers
-- Learning during poor connectivity
-- Faster doubt resolution
-- Better opportunity awareness
-- Structured career exploration
-
-### For Educators & Mentors
-
-- Wider student reach
-- Structured interaction
-- Better visibility into student progress
-
-### For Institutions
-
-- Centralized digital learning support
-- Better student engagement
-- A foundation for scalable educational technology
-
----
-
-# 🏆 Why EduSaarthi?
-
-EduSaarthi combines several needs that are usually scattered across different platforms:
-
-```
-Learning
-   +
-AI Assistance
-   +
-Local Languages
-   +
-Offline Access
-   +
-Voice
-   +
-Scholarships
-   +
-Career Guidance
-   +
-Mentorship
-        ↓
-   EduSaarthi
-```
-
-The prototype demonstrates the **feasibility of this unified approach**.
-
-The next phase will focus on scale, verification, personalization and real-world deployment.
-
----
-
-# 🧪 Testing
-
-The project includes automated test scripts for important application workflows.
-
-Run:
-
-```bash
-npm test
-```
-
----
-
-# 💻 Run Locally
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/Nandani27-garg/Edusathi.git
-cd Edusathi
-```
-
-### 2. Install dependencies
-
-```bash
-npm install
-```
-
-### 3. Configure environment variables
-
-Copy:
-
-```text
-.env.example → .env
-```
-
-Then add the required API keys and configuration values.
-
-**Never commit real API keys or secrets to GitHub.**
-
-### 4. Start the application
-
-```bash
-npm start
-```
-
-### 5. Run tests
-
-```bash
-npm test
 ```
 
 ---
@@ -477,53 +219,253 @@ Edusathi/
 ├── .gitignore
 ├── LICENSE
 │
-├── edusathi/
+├── database/
+│   ├── database.js
+│   └── seed.js
+│
 ├── public/
+│   ├── css/
+│   ├── js/
+│   ├── images/
+│   ├── manifest.json
+│   └── service-worker.js
+│
 ├── routes/
+│   ├── ai.js
+│   ├── auth.js
+│   ├── career.js
+│   ├── learn.js
+│   ├── mentors.js
+│   ├── profile.js
+│   ├── progress.js
+│   ├── quizzes.js
+│   └── scholarships.js
+│
 ├── tests/
 ├── utils/
 └── views/
 ```
 
+The repository contains **one canonical project structure**. The previous duplicated nested project folder has been removed to avoid confusion when cloning or deploying.
+
 ---
 
-# 🟡 Project Status
+# 💻 Run Locally
 
-## Functional Hackathon Prototype / MVP
+### 1. Clone
 
-The current version is **not claimed to be a production-ready national-scale platform**.
+```bash
+git clone https://github.com/Nandani27-garg/Edusathi.git
+cd Edusathi
+```
 
-It is a working prototype intended to demonstrate:
+### 2. Install dependencies
 
-- Product concept
-- Core user journeys
+```bash
+npm install
+```
+
+### 3. Configure environment
+
+Copy:
+
+```text
+.env.example → .env
+```
+
+Add your Gemini API key if you want live Gemini responses:
+
+```text
+GEMINI_API_KEY=your_key_here
+SESSION_SECRET=your_long_random_secret
+```
+
+The app can still demonstrate the core educational flow without a Gemini key because the prototype includes fallback responses.
+
+### 4. Start
+
+```bash
+npm start
+```
+
+Open:
+
+```text
+http://localhost:3000
+```
+
+### 5. Reset / reseed prototype data
+
+```bash
+npm run seed
+```
+
+The SQLite file is created locally under `database/` and is ignored by Git.
+
+---
+
+# 🧪 Testing
+
+Run:
+
+```bash
+npm test
+```
+
+The test suite covers important prototype flows including:
+
+- Landing page
+- Authentication
+- 1-click demo login
+- Dashboard
+- Learning and lessons
+- Offline lesson API
+- AI Tutor
+- Multilingual responses
+- Scholarship filters
+- Career guidance
+- Mentor requests
+- PWA assets
+- Quiz grading
+- Progress
+- Profile and settings
+- Language persistence
+
+---
+
+# 🔐 Security & Responsible AI
+
+The prototype includes:
+
+- Password hashing with bcryptjs
+- Environment-based API configuration
+- Session authentication
+- Secret protection through `.gitignore`
+- Local SQLite data isolation
+
+### Production direction
+
+The production version will add:
+
+- Verified educational sources
+- RAG-based answers
+- Source attribution
+- AI evaluation and hallucination testing
+- Human verification for high-impact guidance
+- Minimal collection of student data
+- Role-based access control
+- Stronger session/security configuration
+- Privacy-by-design practices
+
+> **AI should assist students, not become the final authority for high-impact educational or career decisions.**
+
+---
+
+# 🛣️ Prototype → Production Roadmap
+
+| Area | Current Prototype | Production Direction |
+|---|---|---|
+| AI Tutor | Gemini + fallback responses | RAG + verified knowledge base |
+| Database | Local SQLite | Scalable managed database |
+| Scholarships | Prototype records + filters | Official/verified integrations |
+| Career | Structured roadmaps + optional AI | Skill-gap analysis + validated pathways |
+| Mentorship | Prototype directory/request flow | Verified mentor network + matching |
+| Offline | PWA + browser storage | Advanced sync and offline-first architecture |
+| Voice | Browser APIs | Regional-language voice capabilities |
+| Analytics | Basic progress | Personalized learning analytics |
+| Security | Core safeguards | RBAC, encryption, auditability |
+| Accessibility | Responsive + voice direction | Formal accessibility testing |
+
+---
+
+# 📈 Expected Impact
+
+### Students
+
+- Continue learning during poor connectivity
+- Learn in a more comfortable language
+- Get instant academic support
+- Discover opportunities in one place
+- Explore structured career pathways
+- Access mentor discovery
+
+### Educators & Mentors
+
+- Reach students beyond traditional classroom boundaries
+- Provide more structured guidance
+
+### Institutions
+
+- A foundation for accessible digital learning support
+- Centralized student learning and opportunity workflows
+
+---
+
+# 🌱 Future Scope
+
+### Personalized Learning
+
+```
+Student activity
+      ↓
+Learning gaps
+      ↓
+Next best concept
+      ↓
+Recommended resource
+      ↓
+Practice + feedback
+```
+
+### Verified Opportunity Layer
+
+The production platform can expand beyond scholarships to:
+
+- Internships
+- Competitions
+- Entrance examinations
+- Courses
+- Government education initiatives
+
+### Regional-language intelligence
+
+Move from direct translation toward explanations that are naturally understandable in local languages.
+
+### Low-connectivity ecosystem
+
+Extend offline learning to schools, community centres and areas with intermittent connectivity.
+
+---
+
+# 🏆 Hackathon Positioning
+
+EduSaarthi is **not presented as a finished national-scale platform**.
+
+The prototype demonstrates:
+
+- A clearly defined access problem
+- A unified product concept
+- A working student journey
 - AI integration
-- Accessibility direction
-- Offline-first approach
-- Technical feasibility
-- Scalability roadmap
+- Multilingual interaction
+- Offline-first technical direction
+- Voice accessibility
+- Opportunity discovery
+- Career guidance
+- Mentorship workflow
+- A practical production roadmap
 
-The next development phase will turn this foundation into a production-grade platform through stronger infrastructure, verified data, real-world testing, improved AI reliability and institutional/educational partnerships.
+The key product principle is:
 
----
-
-# 🔮 Vision
-
-> ### **"Learning should not depend on where a student is born, which language they speak, or how strong their internet connection is."**
-
-EduSaarthi envisions a future where a student can access:
-
-**Knowledge → Guidance → Opportunity → Mentorship**
-
-through one accessible digital companion.
+> **Technology should adapt to the learner — not the other way around.**
 
 ---
 
-## 👥 Team
+# 👥 Team
 
 **EduSaarthi Team**
 
-Built with a focus on:
+Built around:
 
 - Artificial Intelligence
 - Inclusive Education
@@ -534,11 +476,9 @@ Built with a focus on:
 
 ---
 
-## 📜 License
+# 📜 License
 
 This project is licensed under the **MIT License**.
-
----
 
 <p align="center">
 
