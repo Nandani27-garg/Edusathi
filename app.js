@@ -242,10 +242,10 @@ app.use((req, res) => {
 if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`=================================================`);
-    console.log(`🚀 EduSaarthi Server running on http://localhost:${PORT}`);
-    console.log(`📚 Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`🌐 Default Language: Hindi / English selectable`);
-    console.log(`⚡ Demo Student: demo@edusaarthi.test | Demo@123`);
+    console.log(` EduSaarthi Server running on http://localhost:${PORT}`);
+    console.log(` Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(` Default Language: Hindi / English selectable`);
+    console.log(` Demo Student: demo@edusaarthi.test | Demo@123`);
     console.log(`=================================================`);
   });
 }
