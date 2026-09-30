@@ -119,8 +119,8 @@ app.get('/dashboard', requireAuth, (req, res) => {
       WHERE p.user_id = ? AND l.course_id = ? AND p.completed = 1
     `, [userId, c.id]);
 
-    const total = totalRow ? totalRow.count : 5;
-    const completed = compRow ? compRow.count : 2;
+    const total = totalRow ? totalRow.count : 0;
+    const completed = compRow ? compRow.count : 0;
     const progressPct = Math.min(100, Math.round((completed / total) * 100));
 
     // Estimated time remaining (15 mins per lesson)
@@ -145,8 +145,8 @@ app.get('/dashboard', requireAuth, (req, res) => {
   `, [userId]);
 
   const totalLessons = db.get(`SELECT COUNT(*) as total FROM lessons`);
-  const totalCount = totalLessons ? totalLessons.total : 20;
-  const completedCount = progressStats ? progressStats.completed_count : 4;
+  const totalCount = totalLessons ? totalLessons.total : 0;
+  const completedCount = progressStats ? progressStats.completed_count : 0;
   const overallProgressPercent = Math.min(100, Math.round((completedCount / totalCount) * 100)) || 68;
 
   // 3. Learning Overview Stats
@@ -158,11 +158,17 @@ app.get('/dashboard', requireAuth, (req, res) => {
     WHERE user_id = ?
   `, [userId]);
 
+  const completedCourses = rawCourses.filter(c => {
+    const row = db.get(`SELECT COUNT(*) as count FROM progress p JOIN lessons l ON p.lesson_id = l.id WHERE p.user_id = ? AND l.course_id = ? AND p.completed = 1`, [userId, c.id]);
+    const total = db.get(`SELECT COUNT(*) as count FROM lessons WHERE course_id = ?`, [c.id]);
+    return total && total.count > 0 && row && row.count >= total.count;
+  }).length;
+  const estimatedStudyMinutes = completedCount * 15;
   const stats = {
-    completedCourses: 4,
-    streakDays: 7,
-    studyTime: '12h 40m',
-    quizScore: (quizAnalytics && quizAnalytics.avg_score) ? Math.round(quizAnalytics.avg_score) : 82
+    completedCourses,
+    streakDays: null,
+    studyTime: estimatedStudyMinutes ? `${Math.floor(estimatedStudyMinutes / 60)}h ${estimatedStudyMinutes % 60}m estimated` : 'Not tracked yet',
+    quizScore: (quizAnalytics && quizAnalytics.avg_score != null) ? Math.round(quizAnalytics.avg_score) : 0
   };
 
   // 4. Daily Challenge Quiz
