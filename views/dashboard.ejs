@@ -14,7 +14,7 @@
           let greetingHi = 'शुभ संध्या';
           if (hour < 12) { greetingEn = 'Good morning'; greetingHi = 'शुभ प्रभात'; }
           else if (hour < 17) { greetingEn = 'Good afternoon'; greetingHi = 'शुभ दोपहर'; }
-          const studentFirstName = user && user.name ? user.name.split(' ')[0] : (lang === 'hi' ? 'रोहित' : 'Rohit');
+          const studentFirstName = user && user.name ? user.name.split(' ')[0] : (lang === 'hi' ? 'विद्यार्थी' : 'Student');
         %>
         <h1 class="greeting-main-title">
           <%= (lang === 'hi') ? `${greetingHi}, ${studentFirstName} 👋` : `${greetingEn}, ${studentFirstName} 👋` %>
@@ -26,6 +26,7 @@
     </div>
 
     <!-- 1. CONTINUE LEARNING: One Prominent Card Only -->
+    <% if (continueLesson) { %>
     <div class="continue-learning-section">
       <div class="section-label-small">
         <span>📖</span>
@@ -47,7 +48,7 @@
             <div class="progress-bar-bg">
               <div class="progress-bar-fill" style="width: <%= continueLesson.progressPct %>%;"></div>
             </div>
-            <span class="progress-pct-badge"><%= continueLesson.progressPct || 68 %>% <%= (lang === 'hi') ? 'पूर्ण' : 'complete' %></span>
+            <span class="progress-pct-badge"><%= continueLesson.progressPct %>% <%= (lang === 'hi') ? 'पूर्ण' : 'complete' %></span>
           </div>
         </div>
 
@@ -59,6 +60,26 @@
         </div>
       </div>
     </div>
+  <% } else { %>
+    <div class="continue-learning-section">
+      <div class="section-label-small">
+        <span>🎉</span>
+        <span><%= (lang === 'hi') ? 'सीखना पूरा हुआ' : 'LEARNING COMPLETE' %></span>
+      </div>
+      <div class="continue-card-primary">
+        <div class="continue-card-body">
+          <h2 class="continue-lesson-heading"><%= (lang === 'hi') ? 'आपने सभी उपलब्ध पाठ पूरे कर लिए हैं!' : 'You have completed all available lessons!' %></h2>
+          <p class="greeting-subtitle"><%= (lang === 'hi') ? 'अब क्विज़ दें, अपनी प्रगति देखें या नया विषय चुनें।' : 'Take a quiz, review your progress, or explore another subject.' %></p>
+        </div>
+        <div class="continue-card-action">
+          <a href="/quizzes" class="btn btn-primary btn-lg continue-btn">
+            <span><%= (lang === 'hi') ? 'क्विज़ दें' : 'Take a Quiz' %></span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  <% } %>
 
     <!-- 2. QUICK STATS: 4 Clean Stats -->
     <div class="quick-stats-section" style="margin-top: 2rem;">
@@ -117,23 +138,23 @@
             </h3>
             <span class="card-subtitle"><%= (lang === 'hi') ? 'प्रतिदिन अपने लक्ष्य पूरे करें' : 'Daily learning checklist' %></span>
           </div>
-          <span class="badge badge-primary" id="goals-completed-counter">2/3 <%= (lang === 'hi') ? 'पूर्ण' : 'completed' %></span>
+          <span class="badge badge-primary" id="goals-completed-counter">0/3 <%= (lang === 'hi') ? 'पूर्ण' : 'completed' %></span>
         </div>
 
         <div class="progress-bar-bg" style="height: 5px; margin: 0.75rem 0 1rem;">
-          <div class="progress-bar-fill" id="goals-progress-fill" style="width: 66%;"></div>
+          <div class="progress-bar-fill" id="goals-progress-fill" style="width: 0%;"></div>
         </div>
 
         <div class="goals-list" role="list">
           <div class="goal-check-item" role="listitem">
-            <input type="checkbox" class="goal-checkbox" id="goal-0" checked>
+            <input type="checkbox" class="goal-checkbox" id="goal-0">
             <label for="goal-0" class="goal-label">
               <span><%= (lang === 'hi') ? 'एक पाठ पूरा करें' : 'Complete one lesson' %></span>
             </label>
           </div>
 
           <div class="goal-check-item" role="listitem">
-            <input type="checkbox" class="goal-checkbox" id="goal-1" checked>
+            <input type="checkbox" class="goal-checkbox" id="goal-1">
             <label for="goal-1" class="goal-label">
               <span><%= (lang === 'hi') ? 'आज का दैनिक क्विज़ दें' : "Take today's quiz" %></span>
             </label>
@@ -205,6 +226,43 @@
     </div>
   </main>
 </div>
+
+<script>
+  // Goals are a personal browser-side checklist, not fabricated activity metrics.
+  // State is persisted locally so checking a goal survives a page refresh.
+  (() => {
+    const boxes = Array.from(document.querySelectorAll('.goal-checkbox'));
+    const counter = document.getElementById('goals-completed-counter');
+    const fill = document.getElementById('goals-progress-fill');
+    const storageKey = 'edusaarthi-dashboard-goals';
+
+    let saved = [];
+    try {
+      saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    } catch (_) {
+      saved = [];
+    }
+
+    boxes.forEach((box, index) => {
+      box.checked = saved[index] === true;
+      box.addEventListener('change', () => {
+        const state = boxes.map(item => item.checked);
+        localStorage.setItem(storageKey, JSON.stringify(state));
+        updateGoalProgress();
+      });
+    });
+
+    function updateGoalProgress() {
+      const completed = boxes.filter(box => box.checked).length;
+      const total = boxes.length;
+      const percent = total ? Math.round((completed / total) * 100) : 0;
+      counter.textContent = `${completed}/${total} ${<%= JSON.stringify(lang === 'hi' ? 'पूर्ण' : 'completed') %>}`;
+      fill.style.width = percent + '%';
+    }
+
+    updateGoalProgress();
+  })();
+</script>
 
 <%- include('partials/bottom-nav', { activeTab: 'dashboard' }) %>
 <%- include('partials/footer') %>
