@@ -121,7 +121,7 @@ app.get('/dashboard', requireAuth, (req, res) => {
 
     const total = totalRow ? totalRow.count : 0;
     const completed = compRow ? compRow.count : 0;
-    const progressPct = Math.min(100, Math.round((completed / total) * 100));
+    const progressPct = total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
 
     // Estimated time remaining (15 mins per lesson)
     const remainingLessons = Math.max(0, total - completed);
@@ -147,7 +147,7 @@ app.get('/dashboard', requireAuth, (req, res) => {
   const totalLessons = db.get(`SELECT COUNT(*) as total FROM lessons`);
   const totalCount = totalLessons ? totalLessons.total : 0;
   const completedCount = progressStats ? progressStats.completed_count : 0;
-  const overallProgressPercent = Math.min(100, Math.round((completedCount / totalCount) * 100)) || 68;
+  const overallProgressPercent = totalCount > 0 ? Math.min(100, Math.round((completedCount / totalCount) * 100)) : 0;
 
   // 3. Learning Overview Stats
   const quizAnalytics = db.get(`
@@ -184,14 +184,7 @@ app.get('/dashboard', requireAuth, (req, res) => {
     WHERE l.id NOT IN (SELECT lesson_id FROM progress WHERE user_id = ? AND completed = 1)
     ORDER BY l.id ASC
     LIMIT 1
-  `) || {
-    id: 3,
-    title: 'Human Geography — Chapter 3: Resources & Land Use',
-    title_hi: 'मानव भूगोल — अध्याय 3: संसाधन एवं भू-उपयोग',
-    course_title: 'Social Science & Geography',
-    course_title_hi: 'सामाजिक विज्ञान एवं भूगोल',
-    progressPct: 68
-  };
+  `, [userId]);
 
   // 6. Matching scholarships preview
   const scholarshipsPreview = db.query(`
