@@ -28,12 +28,16 @@ router.get('/', (req, res) => {
 
 // POST /mentors/request - Submit a mentoring request
 router.post('/request', (req, res) => {
+  if (!req.session.user) {
+    if (req.headers['accept']?.includes('application/json')) {
+      return res.status(401).json({ error: 'Please log in before sending a mentor request.' });
+    }
+    return res.redirect('/auth/login');
+  }
   const { mentor_id, subject, message, preferred_language } = req.body;
   const mentorId = parseInt(mentor_id, 10);
 
-  // If not logged in, fallback to first available user
-  const fallbackUser = db.get('SELECT id FROM users ORDER BY id ASC LIMIT 1');
-  const userId = req.session.user ? req.session.user.id : (fallbackUser ? fallbackUser.id : 1);
+  const userId = req.session.user.id;
 
   try {
     db.run(
