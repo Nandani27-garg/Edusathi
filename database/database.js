@@ -111,7 +111,7 @@ function seed() {
   initializeSchema();
   reset();
 
-  const demoPasswordHash = '$2b$10$abcdefghijklmnopqrstuuABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const demoPasswordHash = '$2b$10$8.Z9hShC5ueK/K1esYw35ea669uva66HZXY/HgVt/GPcwcNlhGgh6';
   run('INSERT INTO users (name, email, password_hash, state, preferred_language, education_level) VALUES (?, ?, ?, ?, ?, ?)',
     ['Rahul Kumar', 'demo@edusaarthi.test', demoPasswordHash, 'Jharkhand', 'hi', 'Class 10']);
 
@@ -215,5 +215,6 @@ function seed() {
 }
 
 initializeSchema();
+if (!get('SELECT id FROM users LIMIT 1')) seed();
 
 module.exports = { get, query, run, exec, initializeSchema, seed, reset, dbPath: DB_PATH };
