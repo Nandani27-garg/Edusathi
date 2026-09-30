@@ -5,6 +5,10 @@ const session = require('express-session');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const sessionSecret = process.env.SESSION_SECRET || (process.env.NODE_ENV === 'production' ? null : 'edusaarthi_dev_secret_key_2026');
+if (!sessionSecret) {
+  throw new Error('SESSION_SECRET must be configured in production.');
+}
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,13 +24,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Express session setup
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || 'edusaarthi_dev_secret_key_2026',
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: false,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
       httpOnly: true,
-      sameSite: 'lax'
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production'
     }
   })
 );
